@@ -13,14 +13,16 @@ let world
 let myFamilyRoom = null
 class FamilyRoom {
     constructor() {
-        this.selectedPoint = 0
+        this.selectedPoint = 4 // where the user starts out
         this.roomPoints = [
             {
                 id: 0,
                 name: "start",
                 asset: "r_start_1",
                 teleportPaths: [
-                    { x: 20, y: 0, z: 0, to: "center" },
+                    { x: 300, y: 0, z: 5, to: "case" },
+                    { x: 50, y: 0, z: -400, to: "window" },
+                    { x: 250, y: 0, z: -260, to: "center" },
                 ]
             },
             {
@@ -28,6 +30,10 @@ class FamilyRoom {
                 name: "center",
                 asset: "r_center_1",
                 teleportPaths: [
+                    { x: -300, y: 0, z: -240, to: "shelf" },
+                    { x: -250, y: 0, z: 180, to: "window" },
+                    { x: 200, y: 0, z: 250, to: "start" },
+                    { x: 240, y: 0, z: -180, to: "case" },
                 ]
             },
             {
@@ -35,28 +41,28 @@ class FamilyRoom {
                 name: "case",
                 asset: "r_case_1",
                 teleportPaths: [
+                    { x: 100, y: 0, z: -400, to: "start" },
+                    { x: 260, y: 0, z: -80, to: "center" },
                 ]
             },
             {
                 id: 3,
-                name: "fireplace",
-                asset: "r_fire_1",
+                name: "shelf",
+                asset: "r_shelf_1",
                 teleportPaths: [
+                    { x: 320, y: 0, z: 50, to: "window" },
+                    { x: 220, y: 0, z: -350, to: "case" },
                 ]
             },
             {
                 id: 4,
-                name: "shelf",
-                asset: "r_shelf_1",
-                teleportPaths: [
-                ]
-            },
-            {
-                id: 5,
                 name: "window",
                 asset: "r_window_1",
                 teleportPaths: [
+                    { x: -380, y: 0, z: 200, to: "shelf" },
+                    { x: -50, y: 0, z: -380, to: "start" },
                 ]
+                
             },
         ]
         this.sky = new Sky({ asset: this.roomPoints[this.selectedPoint].asset })
@@ -70,11 +76,10 @@ class FamilyRoom {
         this.sky.setAsset(foundNewRoomInfo.asset)
         this.updateTeleportPads()
     }
+    // Creates all the teleport markers (only used at launch)
     initiateTeleportPads() {
         this.roomPoints.forEach(eachRoom => {
-            console.log(eachRoom)
             eachRoom.teleportPaths.forEach(eachTeleportLocation => {
-                console.log(eachTeleportLocation)
                 this.allTeleportPaths.push({
                     obj: new TeleportMarker({
                         x: eachTeleportLocation.x,
@@ -88,13 +93,13 @@ class FamilyRoom {
         })
         this.updateTeleportPads()
     }
+    // Updates the pads being shown/hidden depending on current selection
     updateTeleportPads() {
-        console.log(this.allTeleportPaths)
         this.allTeleportPaths.forEach(eachTeleportPath => {
             if (eachTeleportPath.id !== this.selectedPoint) {
-                eachTeleportPath.obj.obj.hide()
+                eachTeleportPath.obj.hideMarker()
             } else {
-                eachTeleportPath.obj.obj.show()
+                eachTeleportPath.obj.showMarker()
             }
         })
     }
@@ -162,22 +167,52 @@ function draw() {
 
 class TeleportMarker {
     constructor({ x, y, z, toLocationName }) {
-        console.log('creating this...', x, y, z, toLocationName)
-        this.obj = new Sphere({
-            x, y, z,
-            width: 1,
-            depth: 1.5,
-            height: 1.2,
+
+        const currentUserPos = world.getUserPosition()
+
+        this.hidden = false
+
+        // For the actual marker (just the visual, NOT clicking event)
+        this.indicator = new Cylinder({
+            x, y: y - 200, z,
+            radius: 30,
+            height: 1,
+        })
+
+        // This is for the actual click event
+        const coordsAdjusted = { x: (currentUserPos.x + x) / 4, z: (currentUserPos.z + z) / 4 }
+        this.clickEventObj = new Cylinder({
+            x: coordsAdjusted.x,
+            y: y - 50,
+            z: coordsAdjusted.z,
+            radius: 20,
+            height: 50,
             red: 255,
             green: 0,
             blue: 0,
+            opacity: 0.5,
             clickFunction: function (e) {
                 console.log("Clicked!!!")
                 console.log(toLocationName)
-                myFamilyRoom.changeValue(toLocationName)
+                console.log(e.getVisibility())
+                if (e.getVisibility()) {
+                    myFamilyRoom.changeValue(toLocationName)
+                }
+                
             }
         })
-        world.add(this.obj)
+        world.add(this.clickEventObj)
+        world.add(this.indicator)
         console.log("added!")
+    }
+    hideMarker() {
+        this.hidden = true
+        this.indicator.hide()
+        this.clickEventObj.hide()
+    }
+    showMarker() {
+        this.hidden = false
+        this.indicator.show()
+        this.clickEventObj.show()
     }
 }
