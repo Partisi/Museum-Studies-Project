@@ -62,13 +62,13 @@ class FamilyRoom {
                     { x: -380, y: 0, z: 200, to: "shelf" },
                     { x: -50, y: 0, z: -380, to: "start" },
                 ]
-                
+
             },
         ]
         this.sky = new Sky({ asset: this.roomPoints[this.selectedPoint].asset })
         world.add(this.sky)
         this.allTeleportPaths = []
-        this.initiateTeleportPads()
+        this.updateTeleportPads()
     }
     changeValue(toName) {
         let foundNewRoomInfo = this.roomPoints.find(o => o.name === toName)
@@ -76,31 +76,27 @@ class FamilyRoom {
         this.sky.setAsset(foundNewRoomInfo.asset)
         this.updateTeleportPads()
     }
-    // Creates all the teleport markers (only used at launch)
-    initiateTeleportPads() {
-        this.roomPoints.forEach(eachRoom => {
-            eachRoom.teleportPaths.forEach(eachTeleportLocation => {
-                this.allTeleportPaths.push({
-                    obj: new TeleportMarker({
-                        x: eachTeleportLocation.x,
-                        y: eachTeleportLocation.y,
-                        z: eachTeleportLocation.z,
-                        toLocationName: eachTeleportLocation.to
-                    }),
-                    id: eachRoom.id
-                })
-            })
-        })
-        this.updateTeleportPads()
-    }
     // Updates the pads being shown/hidden depending on current selection
     updateTeleportPads() {
-        this.allTeleportPaths.forEach(eachTeleportPath => {
-            if (eachTeleportPath.id !== this.selectedPoint) {
-                eachTeleportPath.obj.hideMarker()
-            } else {
-                eachTeleportPath.obj.showMarker()
-            }
+        // Clear current
+        this.allTeleportPaths.forEach(eachOldPoint => {
+            world.remove(eachOldPoint.obj.clickEventObj)
+            world.remove(eachOldPoint.obj.indicator)
+        })
+        this.allTeleportPaths = []
+
+        // Set new
+        const currentRoom = this.roomPoints[this.selectedPoint]
+        currentRoom.teleportPaths.forEach(eachTeleportLocation => {
+            this.allTeleportPaths.push({
+                obj: new TeleportMarker({
+                    x: eachTeleportLocation.x,
+                    y: eachTeleportLocation.y,
+                    z: eachTeleportLocation.z,
+                    toLocationName: eachTeleportLocation.to
+                }),
+                id: currentRoom.id
+            })
         })
     }
 }
@@ -170,7 +166,6 @@ class TeleportMarker {
 
         const currentUserPos = world.getUserPosition()
 
-        this.hidden = false
 
         // For the actual marker (just the visual, NOT clicking event)
         this.indicator = new Cylinder({
@@ -180,39 +175,25 @@ class TeleportMarker {
         })
 
         // This is for the actual click event
-        const coordsAdjusted = { x: (currentUserPos.x + x) / 4, z: (currentUserPos.z + z) / 4 }
+        const coordsAdjusted = { x: (currentUserPos.x + x) / 5, z: (currentUserPos.z + z) / 5 }
         this.clickEventObj = new Cylinder({
             x: coordsAdjusted.x,
             y: y - 50,
             z: coordsAdjusted.z,
             radius: 20,
-            height: 50,
+            height: 60,
             red: 255,
             green: 0,
             blue: 0,
-            opacity: 0.5,
+            opacity: 0,
             clickFunction: function (e) {
-                console.log("Clicked!!!")
-                console.log(toLocationName)
-                console.log(e.getVisibility())
-                if (e.getVisibility()) {
-                    myFamilyRoom.changeValue(toLocationName)
-                }
-                
+                console.log("Changing to: ", toLocationName)
+                myFamilyRoom.changeValue(toLocationName)
+
             }
         })
         world.add(this.clickEventObj)
         world.add(this.indicator)
         console.log("added!")
-    }
-    hideMarker() {
-        this.hidden = true
-        this.indicator.hide()
-        this.clickEventObj.hide()
-    }
-    showMarker() {
-        this.hidden = false
-        this.indicator.show()
-        this.clickEventObj.show()
     }
 }
