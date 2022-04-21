@@ -155,10 +155,58 @@ function setup() {
 
 }
 
+let loaded = false
 function draw() {
     // buffer1.image(myImage, 0, 0)
     // buffer1.fill('red')
     // buffer1.ellipse(random(0, imgWidth / 2), random(0, imgHeight / 2), 50, 50)
+    // background("#fa5cff")
+
+    
+    if (loaded === false) {
+        // if reached ending
+        if (story.currentStep + 1 > story.steps.length) {
+            console.log("reached end!")
+            story.currentStep = 0
+            story.currentSubStep = 0
+        } else {
+            // if dialogue or info shown
+            if (story.steps[story.currentStep].actions.length > 0) {
+                console.log(story.steps[story.currentStep].actions[story.currentSubStep].header)
+                console.log(story.steps[story.currentStep].actions[story.currentSubStep])
+                story.steps[story.currentStep].actions[story.currentSubStep].display()
+            } else { // there is some other action that must take place
+
+            }
+        }
+
+        loaded = true
+
+    }
+}
+
+// On Mouse click
+function mouseClicked() {
+    console.log("ckick")
+    if (loaded) { // some event was displayed
+        console.log(story.steps[story.currentStep].actions.length, story.currentSubStep)
+        // There is another action step to proceed to
+        if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
+            let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+
+            currentAction.hide()
+            story.currentSubStep += 1
+            loaded = false
+        } else { // moves onto next step (NOT substep)
+            if (story.steps[story.currentStep].actions.length === story.currentSubStep + 1) {
+                let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+                currentAction.hide()
+            }
+            story.currentStep += 1
+            story.currentSubStep = 0
+            loaded = false
+        }
+    }
 }
 
 class TeleportMarker {
