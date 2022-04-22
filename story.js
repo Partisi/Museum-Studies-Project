@@ -42,6 +42,7 @@ class ObjectInfo {
     }
     display() {
         const overlayElement = document.getElementById('overlay-container')
+        overlayElement.classList.add('blur-background')
         overlayElement.innerHTML = `
             <section id="object-info-container">
                 <h2>${this.header}</h2>
@@ -51,6 +52,7 @@ class ObjectInfo {
     }
     hide() {
         const overlayElement = document.getElementById('overlay-container')
+        overlayElement.classList.remove('blur-background')
         overlayElement.style.display = "none"
     }
 }
