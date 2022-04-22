@@ -10,101 +10,14 @@
 
 let world
 
-let myFamilyRoom = null
-class FamilyRoom {
-    constructor() {
-        this.selectedPoint = 4 // where the user starts out
-        this.roomPoints = [
-            {
-                id: 0,
-                name: "start",
-                asset: "r_start_1",
-                teleportPaths: [
-                    { x: 300, y: 0, z: 5, to: "case" },
-                    { x: 50, y: 0, z: -400, to: "window" },
-                    { x: 250, y: 0, z: -260, to: "center" },
-                ]
-            },
-            {
-                id: 1,
-                name: "center",
-                asset: "r_center_1",
-                teleportPaths: [
-                    { x: -300, y: 0, z: -240, to: "shelf" },
-                    { x: -250, y: 0, z: 180, to: "window" },
-                    { x: 200, y: 0, z: 250, to: "start" },
-                    { x: 240, y: 0, z: -180, to: "case" },
-                ]
-            },
-            {
-                id: 2,
-                name: "case",
-                asset: "r_case_1",
-                teleportPaths: [
-                    { x: 100, y: 0, z: -400, to: "start" },
-                    { x: 260, y: 0, z: -80, to: "center" },
-                ]
-            },
-            {
-                id: 3,
-                name: "shelf",
-                asset: "r_shelf_1",
-                teleportPaths: [
-                    { x: 320, y: 0, z: 50, to: "window" },
-                    { x: 220, y: 0, z: -350, to: "case" },
-                ]
-            },
-            {
-                id: 4,
-                name: "window",
-                asset: "r_window_1",
-                teleportPaths: [
-                    { x: -380, y: 0, z: 200, to: "shelf" },
-                    { x: -50, y: 0, z: -380, to: "start" },
-                ]
-
-            },
-        ]
-        this.sky = new Sky({ asset: this.roomPoints[this.selectedPoint].asset })
-        world.add(this.sky)
-        this.allTeleportPaths = []
-        this.updateTeleportPads()
-    }
-    changeValue(toName) {
-        let foundNewRoomInfo = this.roomPoints.find(o => o.name === toName)
-        this.selectedPoint = foundNewRoomInfo.id
-        this.sky.setAsset(foundNewRoomInfo.asset)
-        this.updateTeleportPads()
-    }
-    // Updates the pads being shown/hidden depending on current selection
-    updateTeleportPads() {
-        // Clear current
-        this.allTeleportPaths.forEach(eachOldPoint => {
-            world.remove(eachOldPoint.obj.clickEventObj)
-            world.remove(eachOldPoint.obj.indicator)
-        })
-        this.allTeleportPaths = []
-
-        // Set new
-        const currentRoom = this.roomPoints[this.selectedPoint]
-        currentRoom.teleportPaths.forEach(eachTeleportLocation => {
-            this.allTeleportPaths.push({
-                obj: new TeleportMarker({
-                    x: eachTeleportLocation.x,
-                    y: eachTeleportLocation.y,
-                    z: eachTeleportLocation.z,
-                    toLocationName: eachTeleportLocation.to
-                }),
-                id: currentRoom.id
-            })
-        })
-    }
-}
 let buffer1
 let texture1
 
 let imgWidth = 6080
 let imgHeight = 3040
+
+let myFamilyRoom
+let story
 
 
 // Setup
@@ -117,6 +30,7 @@ function setup() {
     world = new World('VRScene');
 
     myFamilyRoom = new FamilyRoom()
+    story = new Story()
 
     // set the background color of the world
     world.setBackground(0, 0, 0);
@@ -163,6 +77,7 @@ function draw() {
     // background("#fa5cff")
 
 
+    // Will RUN ONCE
     if (loaded === false) {
         // if reached ending
         if (story.currentStep + 1 > story.steps.length) {
@@ -170,50 +85,46 @@ function draw() {
             story.currentStep = 0
             story.currentSubStep = 0
         } else {
-            // if dialogue or info shown
+            // if some action
             if (story.steps[story.currentStep].actions.length > 0) {
-                console.log(story.steps[story.currentStep].actions[story.currentSubStep].header)
-                console.log(story.steps[story.currentStep].actions[story.currentSubStep])
-                story.steps[story.currentStep].actions[story.currentSubStep].display()
-            } else { // there is some other action that must take place
-
+                if (story.steps[story.currentStep].actions[story.currentSubStep].type !== "discovery") {
+                    // dialogue or info prompt
+                    story.steps[story.currentStep].actions[story.currentSubStep].display()
+                } else {
+                    // if discovery
+                    console.log('WE ARE ON DISCOVERY')
+                    updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
+                }
             }
         }
-
         loaded = true
-
     }
 }
 
-// On Mouse click
-function mouseClicked() {
-    if (loaded) { // some event was displayed
-        // if we are in an object viewing
-        if (story.steps[story.currentStep].actions[story.currentSubStep]?.type === 'info') {
-            return
-        }
-        console.log(story.steps[story.currentStep].actions.length, story.currentSubStep)
-        // There is another action step to proceed to
-        moveNextStep()
-    }
+// On Dialogue Next
+function continueDialogue() {
+    moveNextStep()
 }
 // Handles in object container
 function handleContinueBttn() {
-    console.log('click')
     moveNextStep()
 }
 
 // Moving on
 function moveNextStep() {
+    console.log("moving on...")
     if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
         let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
-
         currentAction.hide()
         story.currentSubStep += 1
     } else { // moves onto next step (NOT substep)
-        if (story.steps[story.currentStep].actions.length === story.currentSubStep + 1) {
+        console.log("NOT substep!", story.currentStep)
+        if ((story.steps[story.currentStep].actions.length === story.currentSubStep + 1) &&
+            story.steps[story.currentStep].actions[story.currentSubStep].type !== "discovery") {
             let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+            console.log("good")
             currentAction.hide()
+            console.log('bad')
         }
         story.currentStep += 1
         story.currentSubStep = 0
@@ -221,39 +132,121 @@ function moveNextStep() {
     loaded = false
 }
 
-class TeleportMarker {
-    constructor({ x, y, z, toLocationName }) {
+class Marker {
+    constructor({ x, y, z, onClick, width = 6, height = 30 }) {
 
         const currentUserPos = world.getUserPosition()
-
-
-        // For the actual marker (just the visual, NOT clicking event)
-        this.indicator = new Cylinder({
-            x, y: y - 200, z,
-            radius: 30,
-            height: 1,
-        })
 
         // This is for the actual click event
         const coordsAdjusted = { x: (currentUserPos.x + x) / 5, z: (currentUserPos.z + z) / 5 }
         this.clickEventObj = new Cylinder({
             x: coordsAdjusted.x,
-            y: y - 50,
+            y: y - 28,
             z: coordsAdjusted.z,
-            radius: 20,
-            height: 60,
+            radius: width * 2,
+            height: height,
             red: 255,
             green: 0,
             blue: 0,
-            opacity: 0,
+            opacity: 0.4,
+            // opacity: 0,
             clickFunction: function (e) {
-                console.log("Changing to: ", toLocationName)
-                myFamilyRoom.changeValue(toLocationName)
-
+                onClick()
             }
         })
         world.add(this.clickEventObj)
-        world.add(this.indicator)
-        console.log("added!")
     }
 }
+
+class TeleportMarker extends Marker {
+    constructor({ x, y, z, toLocationName }) {
+        super({
+            x, y, z, onClick: function (e) {
+                myFamilyRoom.changeValue(toLocationName)
+            }
+        })
+
+        // // A visual indicator of the marker
+        this.indicator = new Cylinder({
+            x, y: y - 200, z,
+            radius: 30,
+            height: 1,
+        })
+        world.add(this.indicator)
+    }
+}
+
+class ObjectMarker extends Marker {
+    constructor({ x, y, z, width, height }) {
+        super({
+            x, y, z, onClick: function (e) { objectFound() },
+            width, height
+        })
+        this.indicator = new Cylinder({
+            x, y: y - 40, z,
+            radius: width * 2,
+            height: height,
+            red: 255,
+            green: 255,
+            blue: 0,
+        })
+        world.add(this.indicator)
+    }
+}
+
+function objectFound() {
+    removeObjectMaker()
+    // moveNextStep()
+    console.log("found!")
+    console.log(story.currentStep)
+    moveNextStep()
+}
+
+function removeObjectMaker() {
+    world.remove(story.findingObject.indicator)
+    world.remove(story.findingObject.clickEventObj)
+    story.findingObject = null
+}
+function updateObjectMarker(newLocation) {
+    console.log("updating obejct marker...")
+    if (!!story) {
+        if (!!story.findingObject) {
+            // Removes current indicator
+            console.log("removing...")
+            console.log(story.findingObject)
+            removeObjectMaker()
+
+        }
+        console.log(newLocation)
+
+        // finds related spot to put the clickable object
+        let itemToFind = story.steps[story.currentStep].actions[story.currentSubStep].item
+        console.log(itemToFind)
+        let relatedSpot = discoveryObjects.find(o => o.item === itemToFind).locations.find(y => y.location === newLocation)
+        console.log(relatedSpot)
+        if (!!relatedSpot) { // should always exist but still check
+            story.findingObject = new ObjectMarker({ ...relatedSpot })
+        }
+    }
+}
+
+const discoveryObjects = [
+    {
+        item: "whatnot",
+        locations: [
+            { location: "center", x: -300, y: 10, z: -380, width: 4, height: 30 },
+            { location: "window", x: -400, y: 25, z: 210, width: 8, height: 10 },
+            { location: "shelf", x: -200, y: 10, z: -90, width: 10, height: 50 },
+        ]
+    },
+    {
+        item: "sofa",
+        locations: [
+            { location: "window", x: 350, y: -20, z: -120, width: 30, height: 20 },
+            { location: "start", x: -120, y: 5, z: -330, width: 6, height: 15 },
+            { location: "center", x: -100, y: 10, z: 240, width: 6, height: 10 },
+            { location: "case", x: 200, y: 15, z: -170, width: 4, height: 10 },
+
+        ]
+    },
+]
