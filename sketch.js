@@ -28,6 +28,14 @@ function setup() {
     // construct the A-Frame world
     // this function requires a reference to the ID of the 'a-scene' tag in our HTML document
     world = new World('VRScene');
+    world.setFlying(false)
+    world.camera.cameraEl.removeAttribute('wasd-controls');
+    //document.querySelector('[camera]').setAttribute("wasd-controls-enabled", false)
+
+    let camAtt = document.querySelector('[camera]')
+    // console.log(camAtt)
+    // camAtt.setAttribute("wasd-controls:enabled", false)
+    console.log(camAtt)
 
     myFamilyRoom = new FamilyRoom()
     story = new Story()
