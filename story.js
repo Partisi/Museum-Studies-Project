@@ -71,9 +71,7 @@ class ObjectInfo {
         overlayElement.style.display = "none"
     }
 }
-function handleContinueBttn() {
-    console.log('click')
-}
+
 const story = {
     currentStep: 10,
     currentSubStep: 0, // index of dialogue

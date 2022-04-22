@@ -162,7 +162,7 @@ function draw() {
     // buffer1.ellipse(random(0, imgWidth / 2), random(0, imgHeight / 2), 50, 50)
     // background("#fa5cff")
 
-    
+
     if (loaded === false) {
         // if reached ending
         if (story.currentStep + 1 > story.steps.length) {
@@ -187,26 +187,38 @@ function draw() {
 
 // On Mouse click
 function mouseClicked() {
-    console.log("ckick")
     if (loaded) { // some event was displayed
+        // if we are in an object viewing
+        if (story.steps[story.currentStep].actions[story.currentSubStep]?.type === 'info') {
+            return
+        }
         console.log(story.steps[story.currentStep].actions.length, story.currentSubStep)
         // There is another action step to proceed to
-        if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
-            let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
-
-            currentAction.hide()
-            story.currentSubStep += 1
-            loaded = false
-        } else { // moves onto next step (NOT substep)
-            if (story.steps[story.currentStep].actions.length === story.currentSubStep + 1) {
-                let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
-                currentAction.hide()
-            }
-            story.currentStep += 1
-            story.currentSubStep = 0
-            loaded = false
-        }
+        moveNextStep()
     }
+}
+// Handles in object container
+function handleContinueBttn() {
+    console.log('click')
+    moveNextStep()
+}
+
+// Moving on
+function moveNextStep() {
+    if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
+        let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+
+        currentAction.hide()
+        story.currentSubStep += 1
+    } else { // moves onto next step (NOT substep)
+        if (story.steps[story.currentStep].actions.length === story.currentSubStep + 1) {
+            let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+            currentAction.hide()
+        }
+        story.currentStep += 1
+        story.currentSubStep = 0
+    }
+    loaded = false
 }
 
 class TeleportMarker {
