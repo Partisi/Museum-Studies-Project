@@ -36,7 +36,8 @@ class ObjectInfo {
         this.name = name
         this.header = header
         this.description = description
-        this.image = image
+        // this.image = image
+        this.image = './assets/cat.jpeg'
         this.imageAlt = imageAlt
         this.imageCaption = imageCaption
     }
@@ -44,9 +45,23 @@ class ObjectInfo {
         const overlayElement = document.getElementById('overlay-container')
         overlayElement.classList.add('blur-background')
         overlayElement.innerHTML = `
-            <section id="object-info-container">
+        <section id="object-info-container">
+            <div class="top-info">
+                <img src=${this.image} alt=${this.imageAlt} />
+                <p>${this.imageCaption}</p>
+            </div>
+            <div class="bottom-info">
                 <h2>${this.header}</h2>
-            </section>
+                <p>${this.description}</p>
+                <button class="button-continue" onclick={handleContinueBttn()}>
+                    <p>Continue</p>
+                    <div class="button-border button-border-left"></div>
+                    <div class="button-border button-border-top"></div>
+                    <div class="button-border button-border-right"></div>
+                    <div class="button-border button-border-bottom"></div>
+                </button>
+            </div>
+        </section>
         `
         overlayElement.style.display = "block"
     }
@@ -55,6 +70,9 @@ class ObjectInfo {
         overlayElement.classList.remove('blur-background')
         overlayElement.style.display = "none"
     }
+}
+function handleContinueBttn() {
+    console.log('click')
 }
 const story = {
     currentStep: 10,
