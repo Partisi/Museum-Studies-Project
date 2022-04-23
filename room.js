@@ -1,6 +1,6 @@
 class FamilyRoom {
     constructor() {
-        this.selectedPoint = 2 // where the user starts out
+        this.selectedPoint = 0 // where the user starts out
         this.roomPoints = [
             {
                 id: 0,
@@ -68,9 +68,14 @@ class FamilyRoom {
         console.log('updating...')
         // Updates the object to find (its clickable region)
 
-        if (!!story?.findingObject) {
-            updateObjectMarker(this.roomPoints[this.selectedPoint].name)
+        console.log(!!story)
+        console.log(!!story?.findingObject)
+        if (!!story) {
+            if (story.steps[story.currentStep].actions[story.currentSubStep]?.type === "discovery") {
+                updateObjectMarker(this.roomPoints[this.selectedPoint].name)
+            }
         }
+
 
         // Clear current
         console.log(this.allTeleportPaths)

@@ -93,7 +93,7 @@ function draw() {
                 console.log(currentPointType)
                 if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
-                } else if (currentPointType === "dialogue" || currentPointType === "discovery") {
+                } else if (currentPointType === "dialogue" || currentPointType === "info") {
                     story.steps[story.currentStep].actions[story.currentSubStep].display()
                 }
             }
