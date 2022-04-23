@@ -30,12 +30,6 @@ function setup() {
     world = new World('VRScene');
     world.setFlying(false)
     world.camera.cameraEl.removeAttribute('wasd-controls');
-    //document.querySelector('[camera]').setAttribute("wasd-controls-enabled", false)
-
-    let camAtt = document.querySelector('[camera]')
-    // console.log(camAtt)
-    // camAtt.setAttribute("wasd-controls:enabled", false)
-    console.log(camAtt)
 
     myFamilyRoom = new FamilyRoom()
     story = new Story()
@@ -95,13 +89,12 @@ function draw() {
         } else {
             // if some action
             if (story.steps[story.currentStep].actions.length > 0) {
-                if (story.steps[story.currentStep].actions[story.currentSubStep].type !== "discovery") {
-                    // dialogue or info prompt
-                    story.steps[story.currentStep].actions[story.currentSubStep].display()
-                } else {
-                    // if discovery
-                    console.log('WE ARE ON DISCOVERY')
+                let currentPointType = story.steps[story.currentStep].actions[story.currentSubStep]?.type
+                console.log(currentPointType)
+                if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
+                } else if (currentPointType === "dialogue" || currentPointType === "discovery") {
+                    story.steps[story.currentStep].actions[story.currentSubStep].display()
                 }
             }
         }
@@ -170,6 +163,7 @@ class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
             x, y, z, onClick: function (e) {
+                console.log("Changing point to: ", toLocationName)
                 myFamilyRoom.changeValue(toLocationName)
             }
         })
@@ -204,9 +198,6 @@ class ObjectMarker extends Marker {
 
 function objectFound() {
     removeObjectMaker()
-    // moveNextStep()
-    console.log("found!")
-    console.log(story.currentStep)
     moveNextStep()
 }
 
@@ -216,14 +207,10 @@ function removeObjectMaker() {
     story.findingObject = null
 }
 function updateObjectMarker(newLocation) {
-    console.log("updating obejct marker...")
+    console.log("UPDATING OBJECT MARKER...")
     if (!!story) {
         if (!!story.findingObject) {
-            // Removes current indicator
-            console.log("removing...")
-            console.log(story.findingObject)
             removeObjectMaker()
-
         }
         console.log(newLocation)
 
