@@ -65,22 +65,16 @@ class FamilyRoom {
     }
     // Updates the pads being shown/hidden depending on current selection
     updateTeleportPads() {
-        console.log('updating...')
-        // Updates the object to find (its clickable region)
 
-        console.log(!!story)
-        console.log(!!story?.findingObject)
+        // Updates the object to find (its clickable region)
         if (!!story) {
             if (story.steps[story.currentStep].actions[story.currentSubStep]?.type === "discovery") {
                 updateObjectMarker(this.roomPoints[this.selectedPoint].name)
             }
         }
 
-
         // Clear current
-        console.log(this.allTeleportPaths)
         this.allTeleportPaths.forEach(eachOldPoint => {
-            console.log(eachOldPoint)
             world.remove(eachOldPoint.obj.clickEventObj)
             world.remove(eachOldPoint.obj.indicator)
         })

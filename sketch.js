@@ -25,6 +25,13 @@ function setup() {
     // no main canvas - we will just use our off screen graphics buffers to hold our dynamic textures
     noCanvas();
 
+    // let myCanvas = createCanvas(800, 480)
+    // myCanvas.parent('#myCanvas')
+  
+    // // Setting up camera
+    // capture = createCapture(VIDEO)
+    // capture.size(width, height)
+
     // construct the A-Frame world
     // this function requires a reference to the ID of the 'a-scene' tag in our HTML document
     world = new World('VRScene');
@@ -90,7 +97,6 @@ function draw() {
             // if some action
             if (story.steps[story.currentStep].actions.length > 0) {
                 let currentPointType = story.steps[story.currentStep].actions[story.currentSubStep]?.type
-                console.log(currentPointType)
                 if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
                 } else if (currentPointType === "dialogue" || currentPointType === "info") {
@@ -113,19 +119,15 @@ function handleContinueBttn() {
 
 // Moving on
 function moveNextStep() {
-    console.log("moving on...")
     if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
         let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
         currentAction.hide()
         story.currentSubStep += 1
     } else { // moves onto next step (NOT substep)
-        console.log("NOT substep!", story.currentStep)
         if ((story.steps[story.currentStep].actions.length === story.currentSubStep + 1) &&
             story.steps[story.currentStep].actions[story.currentSubStep].type !== "discovery") {
             let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
-            console.log("good")
             currentAction.hide()
-            console.log('bad')
         }
         story.currentStep += 1
         story.currentSubStep = 0
@@ -163,7 +165,6 @@ class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
             x, y, z, onClick: function (e) {
-                console.log("Changing point to: ", toLocationName)
                 myFamilyRoom.changeValue(toLocationName)
             }
         })
@@ -207,18 +208,14 @@ function removeObjectMaker() {
     story.findingObject = null
 }
 function updateObjectMarker(newLocation) {
-    console.log("UPDATING OBJECT MARKER...")
     if (!!story) {
         if (!!story.findingObject) {
             removeObjectMaker()
         }
-        console.log(newLocation)
 
         // finds related spot to put the clickable object
         let itemToFind = story.steps[story.currentStep].actions[story.currentSubStep].item
-        console.log(itemToFind)
         let relatedSpot = discoveryObjects.find(o => o.item === itemToFind).locations.find(y => y.location === newLocation)
-        console.log(relatedSpot)
         if (!!relatedSpot) { // should always exist but still check
             story.findingObject = new ObjectMarker({ ...relatedSpot })
         }

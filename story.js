@@ -4,21 +4,6 @@ function preload() {
     console.log(myImages)
 }
 
-class DiscoveryObject {
-    constructor({ name, locations }) {
-        this.name = name
-        this.locations = locations
-
-        this.marker = null
-
-        // console.log(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint])
-        // this.updateMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
-    }
-    updateMarker(currentLocation) {
-        console.log(currentLocation)
-    }
-}
-
 class Dialogue {
     constructor({ who, msg }) {
         this.type = "dialogue"
@@ -136,11 +121,6 @@ class Story {
             { // user is searching for american shelf
                 id: 5,
                 actions: [
-                    // new DiscoveryObject({
-                    //     name: "shelf", locations: [
-                    //         { point: "start", x: 300, y: 0, z: 300 }
-                    //     ]
-                    // })
                     { type: "discovery", item: "whatnot" }
                 ],
             },
@@ -221,7 +201,6 @@ class Story {
                 ]
             },
         ]
-        console.log(this.findingObject)
         this.steps = this.steps.concat(this.stepsMain, this.stepsAR, this.stepsVR)
     }
 }
