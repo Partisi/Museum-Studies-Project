@@ -27,7 +27,7 @@ function setup() {
 
     // let myCanvas = createCanvas(800, 480)
     // myCanvas.parent('#myCanvas')
-  
+
     // // Setting up camera
     // capture = createCapture(VIDEO)
     // capture.size(width, height)
@@ -84,6 +84,12 @@ function draw() {
     // buffer1.fill('red')
     // buffer1.ellipse(random(0, imgWidth / 2), random(0, imgHeight / 2), 50, 50)
     // background("#fa5cff")
+
+    // console.log(myFamilyRoom.allTeleportPaths)
+
+    for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
+        myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
+    }
 
 
     // Will RUN ONCE
@@ -151,8 +157,8 @@ class Marker {
             red: 255,
             green: 0,
             blue: 0,
-            opacity: 0.4,
-            // opacity: 0,
+            // opacity: 0.4,
+            opacity: 0,
             clickFunction: function (e) {
                 onClick()
             }
@@ -170,12 +176,48 @@ class TeleportMarker extends Marker {
         })
 
         // // A visual indicator of the marker
-        this.indicator = new Cylinder({
+        this.indicator = new Container3D({
             x, y: y - 200, z,
-            radius: 30,
-            height: 1,
         })
+
+        // Bottom floor platform
+        this.indicator.add(new Ring({
+            y: 1,
+            radiusInner: 25,
+            radiusOuter: 30,
+            rotationX: -90,
+            red: 54, green: 54, blue: 54,
+        }))
+        this.indicator.add(new Circle({
+            radius: 25,
+            rotationX: -90,
+            red: 245, green: 245, blue: 245,
+        }))
+
+        // animated top section
+        this.indicator.add(new Ring({
+            x: 0, y: 1, z: 0,
+            radiusInner: 10,
+            radiusOuter: 25,
+            rotationX: -90,
+            red: 133, green: 50, blue: 207,
+        }))
+        this.animationSpeed = 0.5
+
         world.add(this.indicator)
+    }
+
+    animateMarker() {
+
+        if (frameCount % 5 === 0) {
+            const maxWidth = 25
+            const ringToAnimate = this.indicator.children[2]
+            ringToAnimate.setRadiusInner(ringToAnimate.getRadiusInner() + this.animationSpeed)
+            if (ringToAnimate.getRadiusInner() >= maxWidth || ringToAnimate.getRadiusInner() <= 0) {
+                this.animationSpeed *= -1
+            }
+
+        }
     }
 }
 
@@ -189,9 +231,7 @@ class ObjectMarker extends Marker {
             x, y: y - 40, z,
             radius: width * 2,
             height: height,
-            red: 255,
-            green: 255,
-            blue: 0,
+            opacity: 0,
         })
         world.add(this.indicator)
     }
