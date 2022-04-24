@@ -1,20 +1,6 @@
 // Main
 
-// Main Inits
-
-// options for scaling
-// 1. photoshop individual objects
-// 2. recolor sky spehre specific objects and just switch out
-// 3. use ray tracing (interactiove dynamic texture) and draw on skysphere which is a canvas
-//          draw img onto canvas and just draw
-
 let world
-
-let buffer1
-let texture1
-
-let imgWidth = 6080
-let imgHeight = 3040
 
 let myFamilyRoom
 let story
@@ -24,18 +10,8 @@ let capture
 
 // Setup
 function setup() {
-    // no main canvas - we will just use our off screen graphics buffers to hold our dynamic textures
+    noCanvas()
 
-
-    // let myCanvas = createCanvas(800, 480)
-    // myCanvas.parent('#myCanvas')
-
-    // // Setting up camera
-    // capture = createCapture(VIDEO)
-    // capture.size(width, height)
-
-    // construct the A-Frame world
-    // this function requires a reference to the ID of the 'a-scene' tag in our HTML document
     world = new World('VRScene');
     world.setFlying(false)
     world.camera.cameraEl.removeAttribute('wasd-controls');
@@ -46,13 +22,9 @@ function setup() {
     // set the background color of the world
     world.setBackground(0, 0, 0);
 
-    // create our off screen graphics buffer & texture
-   
-    document.getElementById('VRScene').style.display = 'none'
-
+    showVR(false)
     myCanvas = createCanvas(windowWidth, windowHeight)
     myCanvas.parent('#my-canvas')
-
     capture = createCapture({
         video: {
             mandatory: {
@@ -61,53 +33,39 @@ function setup() {
             }
         }
     });
-
-
     capture.hide();
-
-
-
+    // showAR(false)
+    // showVR(false)
 }
-let mySecondCanvas
 
 let loaded = false
-
-let load = false
-
-let theImg = null
+let screenshottedEnv = null
 
 function mouseClicked() {
-    theImg = capture.get(0, 0, myCanvas.width, myCanvas.height)
-    startExp = true
+    screenshottedEnv = capture.get(0, 0, myCanvas.width, myCanvas.height)
+    startClockExperience = true
 }
-let startExp = false
+let startClockExperience = false
 
 const particles = []
 async function createClockExperience() {
-    var elem = document.getElementById("myAnimation");
-    elem.style.display = 'block'
 
+    document.getElementById("myAnimation").style.display = 'block'
+    
     await sleep(1000)
     for (let i = 0; i < 100; i++) {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
     }
     await sleep(4000)
+
     console.log("Should move on now...")
-    elem.style.display = 'none'
 
-    document.getElementById('my-canvas').style.display = 'none'
+    showAR(false)
+    showVR()
 
-    const vrScene = document.getElementById('VRScene')
-    vrScene.style.display = 'block'
-    vrScene.style.zIndex = '99999999999999999999'
-    
-    await sleep(2000)
+    await sleep(1000)
     moveNextStep()
 }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 class Particle {
     constructor(x, y) {
         this.xPos = x
@@ -129,9 +87,6 @@ class Particle {
 
         this.alive = true
     }
-
-
-
     display() {
         noStroke();
         fill(this.color[0], this.color[1], this.color[2], this.opacity)
@@ -151,25 +106,23 @@ class Particle {
             this.alive = false
         }
     }
-
 }
 
 
 function draw() {
 
     if (story.currentStep <= 3) { // We are in AR space
-        myCanvas.background(0);
-
-        if (startExp) {
-            if (load === false) {
-                load = true
+        background(0)
+        if (startClockExperience) {
+            if (loaded === false) {
+                loaded = true
                 console.log("we begin")
                 createClockExperience()
             }
         }
 
-        if (!!theImg) {
-            image(theImg, 0, 0, myCanvas.width, myCanvas.height);
+        if (!!screenshottedEnv) {
+            image(screenshottedEnv, 0, 0, myCanvas.width, myCanvas.height);
         } else {
             image(capture, 0, 0, myCanvas.width, myCanvas.height);
         }
@@ -210,6 +163,8 @@ function draw() {
     }
 }
 
+
+// VR HANDLING
 
 // On Dialogue Next
 function continueDialogue() {
@@ -254,8 +209,8 @@ class Marker {
             red: 255,
             green: 0,
             blue: 0,
-            opacity: 0.4,
-            // opacity: 0,
+            //opacity: 0.4,
+            opacity: 0,
             clickFunction: function (e) {
                 onClick()
             }
