@@ -1,5 +1,53 @@
-#VRScence {
+#VRScene {
     z-index: 1;
+    padding: 24px;
+    // display: none;
+}
+
+#my-canvas {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#myAnimation {
+    width: 320px;
+    height: 320px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -160px;
+    margin-top: -160px;
+
+    z-index: 9999999999999;
+
+    background-image: url('./assets/mrclock-removebg-preview.png');
+    background-position: 50% 50%;
+    /* Sets reference point to scale from */
+    background-size: cover;
+
+    display: none;
+    animation-name: appear;
+    animation-duration: 2000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+
+    40% {
+        opacity: 0.3;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 h1,

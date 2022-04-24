@@ -19,11 +19,13 @@ let imgHeight = 3040
 let myFamilyRoom
 let story
 
+let myCanvas
+let capture
 
 // Setup
 function setup() {
     // no main canvas - we will just use our off screen graphics buffers to hold our dynamic textures
-    noCanvas();
+
 
     // let myCanvas = createCanvas(800, 480)
     // myCanvas.parent('#myCanvas')
@@ -45,74 +47,169 @@ function setup() {
     world.setBackground(0, 0, 0);
 
     // create our off screen graphics buffer & texture
-    let myFactor = 4
-    buffer1 = createGraphics(imgWidth / myFactor, imgHeight / myFactor);
-    texture1 = world.createDynamicTextureFromCreateGraphics(buffer1);
-    buffer1.ellipse(0, 0, 50, 50)
-    buffer1.clear()
-    let skySphere = new Sphere({
-        x: 0, y: 0, z: 0,
-        radius: 100,
-        asset: texture1,
-        dynamicTexture: true,
-        transparent: true,
-        dynamicTextureWidth: imgWidth / myFactor,
-        dynamicTextureHeight: imgHeight / myFactor,
-        overFunction: function (entity, intersectionInfo) {
-            // intersectionInfo is an object that contains info about how the user is
-            // interacting with this entity.  it contains the following info:
-            // .distance : a float describing how far away the user is
-            // .point3d : an object with three properties (x, y & z) describing where the user is touching the entity
-            // .point2d : an object with two properites (x & y) describing where the user is touching the entity in 2D space (essentially where on the dynamic canvas the user is touching)
-            // .uv : an object with two properies (x & y) describing the raw textural offset (used to compute point2d)
+   
+    document.getElementById('VRScene').style.display = 'none'
 
-            // draw an ellipse at the 2D intersection point on the dynamic texture
+    myCanvas = createCanvas(windowWidth, windowHeight)
+    myCanvas.parent('#my-canvas')
 
-            // buffer1.fill(random(255), random(255), random(255));
-            // buffer1.ellipse(intersectionInfo.point2d.x, intersectionInfo.point2d.y, 20, 20);
-            // console.log("here");
-            // console.log(intersectionInfo.point2d.x, intersectionInfo.point2d.y)
-        }
-    });
-    world.add(skySphere);
-
-}
-
-let loaded = false
-function draw() {
-    // buffer1.image(myImage, 0, 0)
-    // buffer1.fill('red')
-    // buffer1.ellipse(random(0, imgWidth / 2), random(0, imgHeight / 2), 50, 50)
-    // background("#fa5cff")
-
-    // console.log(myFamilyRoom.allTeleportPaths)
-
-    for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
-        myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
-    }
-
-
-    // Will RUN ONCE
-    if (loaded === false) {
-        // if reached ending
-        if (story.currentStep + 1 > story.steps.length) {
-            console.log("reached end!")
-            story.currentStep = 0
-            story.currentSubStep = 0
-        } else {
-            // if some action
-            if (story.steps[story.currentStep].actions.length > 0) {
-                let currentPointType = story.steps[story.currentStep].actions[story.currentSubStep]?.type
-                if (currentPointType === "discovery") {
-                    updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
-                } else if (currentPointType === "dialogue" || currentPointType === "info") {
-                    story.steps[story.currentStep].actions[story.currentSubStep].display()
-                }
+    capture = createCapture({
+        video: {
+            mandatory: {
+                maxWidth: myCanvas.width,
+                maxHeight: myCanvas.height
             }
         }
-        loaded = true
+    });
+
+
+    capture.hide();
+
+
+
+}
+let mySecondCanvas
+
+let loaded = false
+
+let load = false
+
+let theImg = null
+
+function mouseClicked() {
+    theImg = capture.get(0, 0, myCanvas.width, myCanvas.height)
+    startExp = true
+}
+let startExp = false
+
+const particles = []
+async function createClockExperience() {
+    var elem = document.getElementById("myAnimation");
+    elem.style.display = 'block'
+
+    await sleep(1000)
+    for (let i = 0; i < 100; i++) {
+        particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
+    }
+    await sleep(4000)
+    console.log("Should move on now...")
+    elem.style.display = 'none'
+
+    document.getElementById('my-canvas').style.display = 'none'
+
+    const vrScene = document.getElementById('VRScene')
+    vrScene.style.display = 'block'
+    vrScene.style.zIndex = '99999999999999999999'
+    
+    await sleep(2000)
+    moveNextStep()
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+class Particle {
+    constructor(x, y) {
+        this.xPos = x
+        this.yPos = y
+        this.xSpeed = random(-1, 1) * random(3, 4)
+        this.ySpeed = random(-1, 1) * random(3, 4)
+
+        this.size = random(15, 30)
+
+        this.opacity = 100
+
+        this.colorSelections = [
+            [3, 252, 223],
+            [245, 59, 242],
+            [108, 230, 126]
+        ]
+
+        this.color = random(this.colorSelections)
+
+        this.alive = true
+    }
+
+
+
+    display() {
+        noStroke();
+        fill(this.color[0], this.color[1], this.color[2], this.opacity)
+
+        ellipse(this.xPos, this.yPos, this.size, this.size)
+
+        if (this.opacity <= 60) {
+            this.opacity -= 0.4
+        } else {
+            this.opacity -= 0.2
+        }
+
+        this.xPos += this.xSpeed
+        this.yPos += this.ySpeed
+
+        if (this.opacity <= 1) {
+            this.alive = false
+        }
+    }
+
+}
+
+
+function draw() {
+
+    if (story.currentStep <= 3) { // We are in AR space
+        myCanvas.background(0);
+
+        if (startExp) {
+            if (load === false) {
+                load = true
+                console.log("we begin")
+                createClockExperience()
+            }
+        }
+
+        if (!!theImg) {
+            image(theImg, 0, 0, myCanvas.width, myCanvas.height);
+        } else {
+            image(capture, 0, 0, myCanvas.width, myCanvas.height);
+        }
+
+        for (var i = 0; i < particles.length; i++) {
+            if (particles[i].alive) {
+                particles[i].display()
+            } else {
+                particles.splice(i)
+                i--
+            }
+        }
+    } else if (story.currentStep <= 12) { // we are in the VR space
+        for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
+            myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
+        }
+
+        // Will RUN ONCE
+        if (loaded === false) {
+            // if reached ending
+            if (story.currentStep + 1 > story.steps.length) {
+                console.log("reached end!")
+                story.currentStep = 0
+                story.currentSubStep = 0
+            } else {
+                // if some action
+                if (story.steps[story.currentStep].actions.length > 0) {
+                    let currentPointType = story.steps[story.currentStep].actions[story.currentSubStep]?.type
+                    if (currentPointType === "discovery") {
+                        updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
+                    } else if (currentPointType === "dialogue" || currentPointType === "info") {
+                        story.steps[story.currentStep].actions[story.currentSubStep].display()
+                    }
+                }
+            }
+            loaded = true
+        }
     }
 }
+
 
 // On Dialogue Next
 function continueDialogue() {
@@ -157,8 +254,8 @@ class Marker {
             red: 255,
             green: 0,
             blue: 0,
-            // opacity: 0.4,
-            opacity: 0,
+            opacity: 0.4,
+            // opacity: 0,
             clickFunction: function (e) {
                 onClick()
             }
