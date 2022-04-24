@@ -1,28 +1,50 @@
-// Main
+/**
+ * Current Issues
+ * - AR Individually is FINE
+ * - VR Individually is FINE
+ * - Moving from AR -> VR still issue
+ * 
+ * - Current flow is as follows:
+ * 1. VR World Created
+ * 2. VR World Hidden
+ * 3. AR World Created
+ * 4. AR World displayed
+ * 5. (user does and finishes AR activity)
+ * 6. func createClockExperience() runs
+ * 7. AR World Hidden
+ * 8. VR World displayed
+ * 9. Story step progresses...
+ * 
+ * Main CodePoints
+ * line 67 in './sketch.js' for the AR -> VR space
+ * line 8 & line 17 './util.js' for the hide/show VR/AR
+ * 
+ * Change line 90 of this.currentStep in './story.js' to 3 for starting at AR and to 4 for starting at VR. Must also hide AR element and show VR element at lines 58,59 in './sketch.js'
+ */
 
+
+// Main Imports
 let world
-
 let myFamilyRoom
 let story
-
 let myCanvas
 let capture
 
 // Setup
 function setup() {
-    noCanvas()
 
+    // <-----------------------> //
+    // VR Space 
+    noCanvas()
     world = new World('VRScene');
     world.setFlying(false)
     world.camera.cameraEl.removeAttribute('wasd-controls');
-
     myFamilyRoom = new FamilyRoom()
     story = new Story()
-
-    // set the background color of the world
     world.setBackground(0, 0, 0);
-
-    showVR(false)
+    // <-----------------------> //
+    // AR Space
+    showVR(false) // hides VR
     myCanvas = createCanvas(windowWidth, windowHeight)
     myCanvas.parent('#my-canvas')
     capture = createCapture({
@@ -34,38 +56,36 @@ function setup() {
         }
     });
     capture.hide();
-    // showAR(false)
-    // showVR(false)
+    // showAR(false) // uncomment both for starting at VR
+    // showVR(true)
 }
 
-let loaded = false
-let screenshottedEnv = null
+let screenshottedEnv = null // screenshot of AR space of camera
+let startClockExperience = false // begins the animation of the clock to VR
 
-function mouseClicked() {
-    screenshottedEnv = capture.get(0, 0, myCanvas.width, myCanvas.height)
-    startClockExperience = true
-}
-let startClockExperience = false
-
-const particles = []
+// Main AR Function
 async function createClockExperience() {
 
+    // Shows animation
     document.getElementById("myAnimation").style.display = 'block'
-    
     await sleep(1000)
     for (let i = 0; i < 100; i++) {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
     }
-    await sleep(4000)
+    await sleep(4000) // after set time, mvoes into VR space
 
     console.log("Should move on now...")
 
-    showAR(false)
-    showVR()
+    showAR(false) // hides AR
+    showVR(true) // shows VR
 
-    await sleep(1000)
-    moveNextStep()
+    await sleep(1000) // simply wait
+
+    moveNextStep() // moves onto next step in story
 }
+
+// Particles for Animation
+const particles = []
 class Particle {
     constructor(x, y) {
         this.xPos = x
@@ -108,7 +128,17 @@ class Particle {
     }
 }
 
+// For taking the screenshot
+function mouseClicked() {
+    if (story.currentStep === 3 && loaded === false) {
+        screenshottedEnv = capture.get(0, 0, myCanvas.width, myCanvas.height)
+        startClockExperience = true
+    }
+}
 
+let loaded = false // used to load once
+
+// Main Drawing
 function draw() {
 
     if (story.currentStep <= 3) { // We are in AR space
@@ -144,7 +174,6 @@ function draw() {
         if (loaded === false) {
             // if reached ending
             if (story.currentStep + 1 > story.steps.length) {
-                console.log("reached end!")
                 story.currentStep = 0
                 story.currentSubStep = 0
             } else {
@@ -193,6 +222,7 @@ function moveNextStep() {
     loaded = false
 }
 
+// General Marker for clicking events
 class Marker {
     constructor({ x, y, z, onClick, width = 6, height = 30 }) {
 
@@ -219,6 +249,7 @@ class Marker {
     }
 }
 
+// The teleport indacotr
 class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
@@ -273,6 +304,7 @@ class TeleportMarker extends Marker {
     }
 }
 
+// An iSpy object to display
 class ObjectMarker extends Marker {
     constructor({ x, y, z, width, height }) {
         super({
@@ -294,11 +326,14 @@ function objectFound() {
     moveNextStep()
 }
 
+// Removes the ipsy object market
 function removeObjectMaker() {
     world.remove(story.findingObject.indicator)
     world.remove(story.findingObject.clickEventObj)
     story.findingObject = null
 }
+
+// Updates marker based on teleport location
 function updateObjectMarker(newLocation) {
     if (!!story) {
         if (!!story.findingObject) {

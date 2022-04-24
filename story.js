@@ -1,9 +1,12 @@
+
+// Pre Loads
 const myImages = {}
 function preload() {
     myImages.cat = loadImage('./assets/cat.jpeg')
     console.log(myImages)
 }
 
+// Dialogue Prompt
 class Dialogue {
     constructor({ who, msg }) {
         this.type = "dialogue"
@@ -32,6 +35,8 @@ class Dialogue {
         overlayElement.style.display = "none"
     }
 }
+
+// Info that is displayed when object is found
 class ObjectInfo {
     constructor({ name, header, description, image, imageAlt, imageCaption }) {
         this.type = "info"
@@ -74,13 +79,19 @@ class ObjectInfo {
     }
 }
 
+/**
+ * Main Flow Object
+ * Basically, each action or step in the entire app is logged here with
+ * currentStep and currentSubStep being the current indexes of where the 
+ * user is currently located at
+ */
 class Story {
     constructor() {
-        this.currentStep = 3
+        this.currentStep = 3 // current step (3 for AR start, 4 for VR start)
         this.currentSubStep = 0 // index of dialogue
         this.steps = [] // master concat of all steps
 
-        this.findingObject = null
+        this.findingObject = null // if user is searching for object
 
         // Main
         this.stepsMain = [
@@ -201,6 +212,8 @@ class Story {
                 ]
             },
         ]
+
+        // Just combines all substeps into a single list
         this.steps = this.steps.concat(this.stepsMain, this.stepsAR, this.stepsVR)
     }
 }
