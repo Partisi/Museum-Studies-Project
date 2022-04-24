@@ -104,20 +104,19 @@ p {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: calc(100% - 96px);
     display: inline-flex;
     justify-content: flex-end;
-    padding: 12px;
+    align-items: center;
+
+    padding-right: 48px;
+    padding-left: 48px;
 
     #msg-container {
-        background-color: white;
-        border: 1px solid black;
-        border-radius: 8px;
-        padding: 8px 12px;
         display: flex;
+        justify-content: flex-end;
         flex-direction: column;
-        justify-content: center;
-        max-width: 320px;
+        align-items: flex-end;
 
         p {
             font-size: 12px;
@@ -125,6 +124,53 @@ p {
             text-align: left;
             margin: 0;
             padding: 0;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 8px;
+            padding: 8px 12px;
+            max-width: 320px;
+        }
+
+        button {
+            width: 120px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            margin-top: 12px;
+
+            cursor: pointer;
+            position: relative;
+            display: block;
+            border: solid 3px rgb(179, 179, 179);
+            z-index: 1;
+            transition: all .2s linear;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+            color: rgb(179, 179, 179);
+            text-transform: uppercase;
+            font-weight: bold;
+
+            &:hover {
+                border: solid 8px grey;
+
+                color: grey;
+
+                &:after,
+                &:before {
+                    background: grey;
+                }
+            }
+
+            &:active {
+                border: solid 4px black;
+
+                color: black;
+                &:after,
+                &:before {
+                    background: black;
+                }
+            }
         }
     }
 
@@ -132,11 +178,13 @@ p {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 100px;
+        margin-right: -24px;
+
+        margin-left: -24px;
 
         img {
-            width: 80px;
-            height: 80px;
+            width: 200px;
+            height: 200px;
             object-fit: contain;
             margin: auto;
         }
@@ -215,6 +263,10 @@ p {
         padding: 18px 56px;
         border: 2px solid #582707;
         background-color: #FFD9DA;
+
+        &:hover {
+            cursor: pointer;
+        }
 
         p {
             font-weight: bold;

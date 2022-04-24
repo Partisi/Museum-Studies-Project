@@ -56,8 +56,8 @@ function setup() {
         }
     });
     capture.hide();
-    // showAR(false) // uncomment both for starting at VR
-    // showVR(true)
+    showAR(false) // uncomment both for starting at VR
+    showVR(true)
 }
 
 let screenshottedEnv = null // screenshot of AR space of camera
