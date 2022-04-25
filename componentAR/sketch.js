@@ -72,12 +72,28 @@ function draw() {
     }
 }
 
+function introSpeak(dialoguePiece) {
+    console.log(dialoguePiece)
+    dialoguePiece.display()
+}
+
 // Main AR Function
 async function createClockExperience() {
 
     // Shows animation
     document.getElementById("myAnimation").style.display = 'block'
+    document.getElementById('intro-dialogue').style.display = 'block'
+
     await sleep(1000)
+    storyAR.steps[0].actions[0].display()
+
+    await sleep(4000)
+    storyAR.steps[0].actions[0].hide()
+    storyAR.steps[0].actions[1].display()
+    
+    await sleep(4000)
+    storyAR.steps[0].actions[1].hide()
+
     for (let i = 0; i < 100; i++) {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
     }

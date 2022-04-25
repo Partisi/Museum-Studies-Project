@@ -4,6 +4,51 @@
     justify-content: center;
     width: 100%;
 
+    #intro-dialogue {
+        display: none;
+        width: 320px;
+        height: 320px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -160px;
+        margin-top: -80px;
+
+        #dialogue-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: calc(100% - 96px);
+            display: inline-flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            padding-right: 48px;
+            padding-left: 48px;
+
+            #msg-container {
+                display: flex;
+                justify-content: flex-end;
+                flex-direction: column;
+                align-items: flex-end;
+
+                p {
+                    font-size: 12px;
+                    color: black;
+                    text-align: left;
+                    margin: 0;
+                    padding: 0;
+                    background-color: white;
+                    border: 1px solid black;
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                    max-width: 320px;
+                }
+
+            }
+        }
+    }
+
     // The animation in AR scene
     #myAnimation {
         width: 320px;
@@ -31,15 +76,19 @@
         0% {
             opacity: 0;
         }
+
         20% {
             opacity: 0.2;
         }
+
         40% {
             opacity: 0.4;
         }
+
         80% {
             opacity: 0.6;
         }
+
         100% {
             opacity: 1;
         }

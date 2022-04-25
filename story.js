@@ -1,30 +1,51 @@
 
 // Dialogue Prompt
 class Dialogue {
-    constructor({ who, msg }) {
+    constructor({ who, msg, env }) {
         this.type = "dialogue"
         this.who = who
         this.msg = msg
         this.image = '../assets/mrclock-removebg-preview.png'
+
+        this.env = env
     }
     display() {
-        const overlayElement = document.getElementById('overlay-container')
-        overlayElement.innerHTML = `
-            <section id="dialogue-container">
-                <div id="msg-container">    
-                    <p>${this.msg}</p>
-                    <button onclick={continueDialogue()}>Continue</button>
-                </div>
-                <div id="who-container">
-                    <img src=${this.image} />
-                </div>
-               
-            </section>
-        `
-        overlayElement.style.display = "block"
+        let overlayElement
+        if (this.env === 'AR') {
+            overlayElement = document.getElementById('intro-dialogue')
+            overlayElement.innerHTML = `
+                <section id="dialogue-container">
+                    <div id="msg-container">    
+                        <p>${this.msg}</p>
+                    </div>
+                </section>
+            `
+            overlayElement.style.display = "block"
+        } else {
+            overlayElement = document.getElementById('overlay-container')
+            overlayElement.innerHTML = `
+                <section id="dialogue-container">
+                    <div id="msg-container">    
+                        <p>${this.msg}</p>
+                        <button onclick={continueDialogue()}>Continue</button>
+                    </div>
+                    <div id="who-container">
+                        <img src=${this.image} />
+                    </div>
+                   
+                </section>
+            `
+            overlayElement.style.display = "block"
+        }
+
     }
     hide() {
-        const overlayElement = document.getElementById('overlay-container')
+        let overlayElement
+        if (this.env === 'AR') {
+            overlayElement = document.getElementById('intro-dialogue')
+        } else {
+            overlayElement = document.getElementById('overlay-container')
+        }
         overlayElement.style.display = "none"
     }
 }
@@ -77,16 +98,12 @@ const stepsAR = [
     { // Clicked enter and clock gives introduction
         id: 0,
         actions: [
-            new Dialogue({ who: "Clock", msg: "Hello! My name is Clementine, I have lived here since the Tredwells first moved into the house in 1835..." }),
-            new Dialogue({ who: "Clock", msg: "Let’s go explore the Downstairs Family Room. Use your phone to scan around the space and click on the appearing..." })
+            new Dialogue({ who: "Clock", env: 'AR', msg: "Hello! My name is Clementine, I have lived here since the Tredwells first moved into the house in 1835..." }),
+            new Dialogue({ who: "Clock", env: 'AR', msg: "Let’s go explore the Downstairs Family Room. Use your phone to scan around the space and click on the appearing..." })
         ]
     },
     { // the AR experience w/ camera is enabled
         id: 1,
-        actions: []
-    },
-    { // Screenshot taken and displaying animations
-        id: 2,
         actions: []
     },
 ]
@@ -95,8 +112,8 @@ const stepsVR = [
     { // Initial Entry into VR, clock speaks
         id: 0,
         actions: [
-            new Dialogue({ who: "Clock", msg: "I want to introduce some of my old friends to you! But they’re shy. If you can solve the riddle I’m about to give you, they’re happy to meet you!" }),
-            new Dialogue({ who: "Clock", msg: "My friend may look wobbly but is stronger than you think. They can store your tableware, but not your food and drink. Can you find them?" })
+            new Dialogue({ who: "Clock", env: 'VR', msg: "I want to introduce some of my old friends to you! But they’re shy. If you can solve the riddle I’m about to give you, they’re happy to meet you!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "My friend may look wobbly but is stronger than you think. They can store your tableware, but not your food and drink. Can you find them?" })
         ]
     },
     { // user is searching for american shelf
@@ -108,8 +125,8 @@ const stepsVR = [
     { // User has clicked on the american shelf (whatnot) thing
         id: 2,
         actions: [
-            new Dialogue({ who: "Clock", msg: "Great job, you found the American Whatnot!" }),
-            new Dialogue({ who: "Clock", msg: "Click the magnifiers to zoom in on the information!" })
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Great job, you found the American Whatnot!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Click the magnifiers to zoom in on the information!" })
         ]
     },
     { // On click of information, displays information
@@ -136,8 +153,8 @@ const stepsVR = [
     { // returns back to room
         id: 4,
         actions: [
-            new Dialogue({ who: "Clock", msg: "Let’s go find my other friends!" }),
-            new Dialogue({ who: "Clock", msg: "My other friend stands without knees; they are well made with care and expertise, so when you’re with them you may feel at ease. Can you find them?" })
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Let’s go find my other friends!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "My other friend stands without knees; they are well made with care and expertise, so when you’re with them you may feel at ease. Can you find them?" })
         ]
     },
     { // user is searching for sofa
@@ -149,8 +166,8 @@ const stepsVR = [
     { // User has clicked on the federal sofa
         id: 6,
         actions: [
-            new Dialogue({ who: "Clock", msg: "Great job, you found the Federal Sofa!" }),
-            new Dialogue({ who: "Clock", msg: "Click the magnifiers to zoom in on the information!" })
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Great job, you found the Federal Sofa!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Click the magnifiers to zoom in on the information!" })
         ]
     },
     { // On click of information, displays information
@@ -177,8 +194,8 @@ const stepsVR = [
     { // returns back to room
         id: 8,
         actions: [
-            new Dialogue({ who: "Clock", msg: "Great job, you found everything!" }),
-            new Dialogue({ who: "Clock", msg: "Goodbye!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Great job, you found everything!" }),
+            new Dialogue({ who: "Clock", env: 'VR', msg: "Goodbye!" }),
             null
         ]
     },
