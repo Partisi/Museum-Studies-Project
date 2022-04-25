@@ -1,9 +1,12 @@
 // Main Imports
 let myCanvas
 let capture
+let storyAR
 
 // Setup
 function setup() {
+    storyAR = new Story(stepsAR)
+    console.log(storyAR)
 
     // AR Space
     myCanvas = createCanvas(windowWidth, windowHeight)
@@ -16,7 +19,7 @@ function setup() {
             }
         }
     });
-    capture.hide();
+    capture.hide()
 }
 
 let screenshottedEnv = null // screenshot of AR space of camera
@@ -32,8 +35,6 @@ async function createClockExperience() {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
     }
     await sleep(4000) // after set time, mvoes into VR space
-
-    await sleep(1000) // simply wait
 
     console.log('move on...')
     window.parent.ar_experience_complete();

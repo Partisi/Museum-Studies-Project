@@ -2,7 +2,7 @@
 // Main Imports
 let world
 let myFamilyRoom
-let story
+let storyVR
 
 
 // Setup
@@ -10,12 +10,14 @@ function setup() {
 
     // <-----------------------> //
     // VR Space 
+    storyVR = new Story(stepsVR)
+    console.log(storyVR)
+
     noCanvas()
     world = new World('VRScene');
     world.setFlying(false)
     world.camera.cameraEl.removeAttribute('wasd-controls');
     myFamilyRoom = new FamilyRoom()
-    story = new Story()
     world.setBackground(0, 0, 0);
 }
 
@@ -24,34 +26,30 @@ let loaded = false // used to load once
 // Main Drawing
 function draw() {
 
-    if (story.currentStep <= 3) { // We are in AR space
-       console.log()
-    } else if (story.currentStep <= 12) { // we are in the VR space
-        for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
-            myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
-        }
+    for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
+        myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
+    }
 
-        // Will RUN ONCE
-        if (loaded === false) {
-            // if reached ending
-            if (story.currentStep === 12 && story.currentSubStep === 2) {
-                story.currentStep = 0
-                story.currentSubStep = 0
-                console.log("we have ending...")
-                window.location.href = '/index.html'
-            } else {
-                // if some action
-                if (story.steps[story.currentStep].actions.length > 0) {
-                    let currentPointType = story.steps[story.currentStep].actions[story.currentSubStep]?.type
-                    if (currentPointType === "discovery") {
-                        updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
-                    } else if (currentPointType === "dialogue" || currentPointType === "info") {
-                        story.steps[story.currentStep].actions[story.currentSubStep].display()
-                    }
+    // Will RUN ONCE
+    if (loaded === false) {
+        // if reached ending
+        if (storyVR.currentStep === 8 && storyVR.currentSubStep === 2) {
+            storyVR.currentStep = 0
+            storyVR.currentSubStep = 0
+            console.log("we have ending...")
+            window.location.href = '/index.html'
+        } else {
+            // if some action
+            if (storyVR.steps[storyVR.currentStep].actions.length > 0) {
+                let currentPointType = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]?.type
+                if (currentPointType === "discovery") {
+                    updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
+                } else if (currentPointType === "dialogue" || currentPointType === "info") {
+                    storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
                 }
             }
-            loaded = true
         }
+        loaded = true
     }
 }
 
@@ -69,18 +67,18 @@ function handleContinueBttn() {
 
 // Moving on
 function moveNextStep() {
-    if (story.steps[story.currentStep].actions.length > story.currentSubStep + 1) {
-        let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+    if (storyVR.steps[storyVR.currentStep].actions.length > storyVR.currentSubStep + 1) {
+        let currentAction = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]
         currentAction.hide()
-        story.currentSubStep += 1
+        storyVR.currentSubStep += 1
     } else { // moves onto next step (NOT substep)
-        if ((story.steps[story.currentStep].actions.length === story.currentSubStep + 1) &&
-            story.steps[story.currentStep].actions[story.currentSubStep].type !== "discovery") {
-            let currentAction = story.steps[story.currentStep].actions[story.currentSubStep]
+        if ((storyVR.steps[storyVR.currentStep].actions.length === storyVR.currentSubStep + 1) &&
+            storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].type !== "discovery") {
+            let currentAction = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]
             currentAction.hide()
         }
-        story.currentStep += 1
-        story.currentSubStep = 0
+        storyVR.currentStep += 1
+        storyVR.currentSubStep = 0
     }
     loaded = false
 }
@@ -191,23 +189,23 @@ function objectFound() {
 
 // Removes the ipsy object market
 function removeObjectMaker() {
-    world.remove(story.findingObject.indicator)
-    world.remove(story.findingObject.clickEventObj)
-    story.findingObject = null
+    world.remove(storyVR.findingObject.indicator)
+    world.remove(storyVR.findingObject.clickEventObj)
+    storyVR.findingObject = null
 }
 
 // Updates marker based on teleport location
 function updateObjectMarker(newLocation) {
-    if (!!story) {
-        if (!!story.findingObject) {
+    if (!!storyVR) {
+        if (!!storyVR.findingObject) {
             removeObjectMaker()
         }
 
         // finds related spot to put the clickable object
-        let itemToFind = story.steps[story.currentStep].actions[story.currentSubStep].item
+        let itemToFind = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].item
         let relatedSpot = discoveryObjects.find(o => o.item === itemToFind).locations.find(y => y.location === newLocation)
         if (!!relatedSpot) { // should always exist but still check
-            story.findingObject = new ObjectMarker({ ...relatedSpot })
+            storyVR.findingObject = new ObjectMarker({ ...relatedSpot })
         }
     }
 }

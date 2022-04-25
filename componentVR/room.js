@@ -67,8 +67,9 @@ class FamilyRoom {
     updateTeleportPads() {
 
         // Updates the object to find (its clickable region)
-        if (!!story) {
-            if (story.steps[story.currentStep].actions[story.currentSubStep]?.type === "discovery") {
+        console.log(storyVR)
+        if (!!storyVR) {
+            if (storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]?.type === "discovery") {
                 updateObjectMarker(this.roomPoints[this.selectedPoint].name)
             }
         }
