@@ -59,7 +59,7 @@ class ObjectInfo {
             </div>
             <div class="bottom-info">
                 <h2>${this.header}</h2>
-                <p>${this.description}</p>
+                <p class="desc">${this.description}</p>
                 <button class="button-continue" onclick={handleContinueBttn()}>
                     <p>Continue</p>
                     <div class="button-border button-border-left"></div>
@@ -87,7 +87,7 @@ class ObjectInfo {
  */
 class Story {
     constructor() {
-        this.currentStep = 4 // current step (3 for AR start, 4 for VR start)
+        this.currentStep = 3 // current step (3 for AR start, 4 for VR start)
         this.currentSubStep = 0 // index of dialogue
         this.steps = [] // master concat of all steps
 
@@ -189,7 +189,7 @@ class Story {
                     new ObjectInfo({
                         name: "",
                         header: "Some sofa header",
-                        description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here. The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
+                        description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here.<br></br> The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
                         image: myImages.cat,
                         imageAlt: "",
                         imageCaption: "This is a red silk sofa..."
@@ -209,6 +209,7 @@ class Story {
                 actions: [
                     new Dialogue({ who: "Clock", msg: "Great job, you found everything!" }),
                     new Dialogue({ who: "Clock", msg: "Goodbye!" }),
+                    null
                 ]
             },
         ]

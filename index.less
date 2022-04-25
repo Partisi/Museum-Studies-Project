@@ -213,7 +213,7 @@ p {
     margin-top: 48px;
 
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
+    overflow-y: scroll;
     h2 {
         margin: 0;
         padding: 0;
@@ -238,7 +238,10 @@ p {
 
     .top-info>p {
         font-style: italic;
-        font-size: 12px;
+        font-size: 16px;
+        padding-left: 6px;
+        padding-right: 6px;
+        text-align: center;
     }
 
     .bottom-info {
@@ -247,6 +250,11 @@ p {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        
+        .desc {
+            font-size: 20px;
+            text-align: center;
+        }
     }
 
     .bottom-info>h2 {

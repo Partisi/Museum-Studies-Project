@@ -30,6 +30,8 @@ let story
 let myCanvas
 let capture
 
+console.log(localStorage.getItem('language'))
+
 // Setup
 function setup() {
 
@@ -56,8 +58,8 @@ function setup() {
         }
     });
     capture.hide();
-    showAR(false) // uncomment both for starting at VR
-    showVR(true)
+    // showAR(false) // uncomment both for starting at VR
+    // showVR(true)
 }
 
 let screenshottedEnv = null // screenshot of AR space of camera
@@ -173,9 +175,11 @@ function draw() {
         // Will RUN ONCE
         if (loaded === false) {
             // if reached ending
-            if (story.currentStep + 1 > story.steps.length) {
+            if (story.currentStep === 12 && story.currentSubStep === 2) {
                 story.currentStep = 0
                 story.currentSubStep = 0
+                console.log("we have ending...")
+                window.location.href = '/landing.html'
             } else {
                 // if some action
                 if (story.steps[story.currentStep].actions.length > 0) {
