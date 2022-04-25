@@ -24,7 +24,7 @@ function setup() {
 let loaded = false // used to load once
 
 // Main Drawing
-function draw() {
+async function draw() {
 
     for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
         myFamilyRoom.allTeleportPaths[i].obj.animateMarker()

@@ -18,3 +18,8 @@ function changeLanguage(selection) {
 
     localStorage.setItem('language', selection)
 }
+
+// Simple Sleeper function to wait for execution
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
