@@ -1,33 +1,64 @@
+// General Use
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: rgba(27, 59, 70)
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Libre Bodoni', serif;
+}
+
+p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+
+@primary1: #ED6A5A;
+@primary2: #F4F1BB;
+@secondary1: #9BC1BC;
+@secondary2: #5D576B;
+@secondary3: #E6EBE0;
+
+// Landing Page
 #landing-page {
-    background-color: #f6e8ff;
-    background-image: url('./assets/cat.jpeg');
+    background-image: url('./assets/merchanthouseimg.jpeg');
+    background-repeat: no-repeat;
 
     #inner-landing-page {
-        background-color: white;
+        background-color: @primary2;
         border-radius: 8px;
-        width: calc(100% - 96px);
         max-width: 600px;
-        min-width: 400px;
+        min-width: 320px;
+        width: 100%;
         margin: auto;
         margin-top: 48px;
 
         position: relative;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        padding: 48px;
 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        height: 400px;
-
         #main-title {
             font-size: 48px;
             font-family: 'Montserrat', sans-serif;
-            color: black;
+            color: @primary1;
             font-weight: bold;
-            text-shadow: 2px 2px 0px rgb(223, 155, 255);
+            text-align: center;
+            padding-top: 112px;
+            margin: 0;
 
         }
 
@@ -37,6 +68,7 @@
             text-align: center;
             padding-left: 24px;
             padding-right: 24px;
+            text-indent: 50px;
         }
 
         #language-settings {
@@ -49,7 +81,8 @@
                 border: none;
                 border-radius: 6px;
                 padding: 4px 12px;
-                
+                width: 80px;
+
                 &:hover {
                     cursor: pointer;
                     background-color: rgb(80, 80, 80);
@@ -60,16 +93,22 @@
                 font-weight: bold;
                 color: white;
             }
+
             .button-unselected {
                 font-weight: normal;
                 color: grey;
             }
         }
 
+        a {
+            text-decoration: none;
+        }
+
+
         #enter-experience-bttn {
             border: none;
             margin: auto;
-            background-image: linear-gradient(144deg, #AF40FF, #5B42F3 50%, #00DDEB);
+            background-image: linear-gradient(144deg, @primary1, @secondary1 50%, @secondary3);
             border-radius: 8px;
             box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
             color: #FFFFFF;
@@ -77,13 +116,10 @@
             font-size: 16px;
             padding: 4px;
 
-            margin-top: 64px;
+            margin-top: 48px;
+            margin-bottom: 24px;
 
-            span {
-                text-decoration: none;
-            }
 
-          
             &:active {
                 outline: 0;
             }
@@ -91,6 +127,7 @@
             &:hover {
                 outline: 0;
                 cursor: pointer;
+                color: black;
             }
 
             span {
