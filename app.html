@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Museum Studies - Combined</title>
+    <style>
+        body {
+            min-height: 100vh;
+        }
+
+        iframe {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <iframe id="iframe_ar" src="arComponent/index.html" scrolling="no"></iframe>
+    <iframe id="iframe_vr" src="vrComponent/index.html" scrolling="no" style="display: none;"></iframe>
+
+    <script>
+        function ar_experience_complete() {
+            document.getElementById('iframe_ar').remove();
+            document.getElementById('iframe_vr').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

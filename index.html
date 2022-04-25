@@ -1,27 +1,13 @@
-<!doctype html>
-<html lang="en-us">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-    <!-- p5 core library -->
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.3.1/lib/p5.js"></script>
-
-    <!-- A-Frame core library -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-
-    <!-- AFrameP5 library -->
-    <script src="https://craignyu.github.io/aframep5/libraries/aframep5-v2.1.js"></script>
-
-    <script defer src=https://cdn.JsDelivr.net/npm/p5/lib/addons/p5.sound.min.js></script>
-
-    <!-- Your p5 Sketch -->
-    <script src="util.js"></script>
-    <script src="room.js"></script>
-    <script src="story.js"></script>
-    <script src="sketch.js"></script>
-
-    <!-- custom styles -->
+    <script src="settings.js"></script>
     <link rel="stylesheet/less" type="text/css" href="index.less" />
     <script src="https://cdn.jsdelivr.net/npm/less@4"></script>
 
@@ -30,42 +16,30 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-
 </head>
 
-<body>
+<body id="landing-page">
 
-    <!-- VR Space (family room) -->
-    <a-scene id="VRScene">
-        <a-assets id="VRAssets">
-            <img src="assets/r_case_1.jpg" id="r_case_1" />
-            <img src="assets/r_case_2.jpg" id="r_case_2" />
-            <img src="assets/r_case_3.jpg" id="r_case_3" />
+    <section id="inner-landing-page">
+        <h1 id="main-title">Find My Friends</h1>
+        <div>
+            <p id="main-desc">Welcome to the Merchant’s House Museum, the only New York City home completely preserved
+                from the 19th
+                century showing the Tredwell family’s furniture, decorative, and household objects.
+            </p>
+            <p id="main-desc">Follow Clementine the clock
+                as
+                you journey back in time to the 1800s to explore how the Tredwell household lived.</p>
 
-            <img src="assets/r_center_1.jpg" id="r_center_1" />
-            <img src="assets/r_center_2.jpg" id="r_center_2" />
-            <img src="assets/r_center_3.jpg" id="r_center_3" />
-
-            <img src="assets/r_shelf_1.jpg" id="r_shelf_1" />
-            <img src="assets/r_shelf_2.jpg" id="r_shelf_2" />
-
-            <img src="assets/r_start_1.jpg" id="r_start_1" />
-            <img src="assets/r_start_2.jpg" id="r_start_2" />
-            <img src="assets/r_start_3.jpg" id="r_start_3" />
-
-            <img src="assets/r_window_1.jpg" id="r_window_1" />
-            <img src="assets/r_window_2.jpg" id="r_window_2" />
-            <img src="assets/r_window_3.jpg" id="r_window_3" />
-        </a-assets>
-    </a-scene>
-
-    <!-- AR Space -->
-    <div id="my-canvas">
-        <div id="myAnimation"></div>
-    </div>
-
-    <!-- Dialogue Display AND Info Display -->
-    <div id="overlay-container"></div>
+            <a href="./app.html">
+                <button id="enter-experience-bttn"><span>Start the Experience</span></button>
+            </a>
+        </div>
+        <div id="language-settings">
+            <button id="spanish" class="button-unselected" onclick="changeLanguage('spanish')">Español</button>
+            <button id="english" class="button-selected" onclick="changeLanguage('english')">English</button>
+        </div>
+    </section>
 
 </body>
 

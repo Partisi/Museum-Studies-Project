@@ -1,36 +1,9 @@
-/**
- * Current Issues
- * - AR Individually is FINE
- * - VR Individually is FINE
- * - Moving from AR -> VR still issue
- * 
- * - Current flow is as follows:
- * 1. VR World Created
- * 2. VR World Hidden
- * 3. AR World Created
- * 4. AR World displayed
- * 5. (user does and finishes AR activity)
- * 6. func createClockExperience() runs
- * 7. AR World Hidden
- * 8. VR World displayed
- * 9. Story step progresses...
- * 
- * Main CodePoints
- * line 67 in './sketch.js' for the AR -> VR space
- * line 8 & line 17 './util.js' for the hide/show VR/AR
- * 
- * Change line 90 of this.currentStep in './story.js' to 3 for starting at AR and to 4 for starting at VR. Must also hide AR element and show VR element at lines 58,59 in './sketch.js'
- */
-
 
 // Main Imports
 let world
 let myFamilyRoom
 let story
-let myCanvas
-let capture
 
-console.log(localStorage.getItem('language'))
 
 // Setup
 function setup() {
@@ -44,98 +17,6 @@ function setup() {
     myFamilyRoom = new FamilyRoom()
     story = new Story()
     world.setBackground(0, 0, 0);
-    // <-----------------------> //
-    // AR Space
-    showVR(false) // hides VR
-    myCanvas = createCanvas(windowWidth, windowHeight)
-    myCanvas.parent('#my-canvas')
-    capture = createCapture({
-        video: {
-            mandatory: {
-                maxWidth: myCanvas.width,
-                maxHeight: myCanvas.height
-            }
-        }
-    });
-    capture.hide();
-    // showAR(false) // uncomment both for starting at VR
-    // showVR(true)
-}
-
-let screenshottedEnv = null // screenshot of AR space of camera
-let startClockExperience = false // begins the animation of the clock to VR
-
-// Main AR Function
-async function createClockExperience() {
-
-    // Shows animation
-    document.getElementById("myAnimation").style.display = 'block'
-    await sleep(1000)
-    for (let i = 0; i < 100; i++) {
-        particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
-    }
-    await sleep(4000) // after set time, mvoes into VR space
-
-    console.log("Should move on now...")
-
-    showAR(false) // hides AR
-    showVR(true) // shows VR
-
-    await sleep(1000) // simply wait
-
-    moveNextStep() // moves onto next step in story
-}
-
-// Particles for Animation
-const particles = []
-class Particle {
-    constructor(x, y) {
-        this.xPos = x
-        this.yPos = y
-        this.xSpeed = random(-1, 1) * random(3, 4)
-        this.ySpeed = random(-1, 1) * random(3, 4)
-
-        this.size = random(15, 30)
-
-        this.opacity = 100
-
-        this.colorSelections = [
-            [3, 252, 223],
-            [245, 59, 242],
-            [108, 230, 126]
-        ]
-
-        this.color = random(this.colorSelections)
-
-        this.alive = true
-    }
-    display() {
-        noStroke();
-        fill(this.color[0], this.color[1], this.color[2], this.opacity)
-
-        ellipse(this.xPos, this.yPos, this.size, this.size)
-
-        if (this.opacity <= 60) {
-            this.opacity -= 0.4
-        } else {
-            this.opacity -= 0.2
-        }
-
-        this.xPos += this.xSpeed
-        this.yPos += this.ySpeed
-
-        if (this.opacity <= 1) {
-            this.alive = false
-        }
-    }
-}
-
-// For taking the screenshot
-function mouseClicked() {
-    if (story.currentStep === 3 && loaded === false) {
-        screenshottedEnv = capture.get(0, 0, myCanvas.width, myCanvas.height)
-        startClockExperience = true
-    }
 }
 
 let loaded = false // used to load once
@@ -144,29 +25,7 @@ let loaded = false // used to load once
 function draw() {
 
     if (story.currentStep <= 3) { // We are in AR space
-        background(0)
-        if (startClockExperience) {
-            if (loaded === false) {
-                loaded = true
-                console.log("we begin")
-                createClockExperience()
-            }
-        }
-
-        if (!!screenshottedEnv) {
-            image(screenshottedEnv, 0, 0, myCanvas.width, myCanvas.height);
-        } else {
-            image(capture, 0, 0, myCanvas.width, myCanvas.height);
-        }
-
-        for (var i = 0; i < particles.length; i++) {
-            if (particles[i].alive) {
-                particles[i].display()
-            } else {
-                particles.splice(i)
-                i--
-            }
-        }
+       console.log()
     } else if (story.currentStep <= 12) { // we are in the VR space
         for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
             myFamilyRoom.allTeleportPaths[i].obj.animateMarker()

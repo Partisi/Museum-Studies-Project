@@ -87,7 +87,7 @@ class ObjectInfo {
  */
 class Story {
     constructor() {
-        this.currentStep = 3 // current step (3 for AR start, 4 for VR start)
+        this.currentStep = 4 // current step (3 for AR start, 4 for VR start)
         this.currentSubStep = 0 // index of dialogue
         this.steps = [] // master concat of all steps
 
