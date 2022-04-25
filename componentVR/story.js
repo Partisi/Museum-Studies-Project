@@ -2,7 +2,7 @@
 // Pre Loads
 const myImages = {}
 function preload() {
-    myImages.cat = loadImage('./assets/cat.jpeg')
+    myImages.cat = loadImage('../assets/cat.jpeg')
     console.log(myImages)
 }
 
@@ -12,7 +12,7 @@ class Dialogue {
         this.type = "dialogue"
         this.who = who
         this.msg = msg
-        this.image = './assets/mrclock-removebg-preview.png'
+        this.image = '../assets/mrclock-removebg-preview.png'
     }
     display() {
         const overlayElement = document.getElementById('overlay-container')
@@ -44,7 +44,7 @@ class ObjectInfo {
         this.header = header
         this.description = description
         // this.image = image
-        this.image = './assets/cat.jpeg'
+        this.image = '../assets/cat.jpeg'
         this.imageAlt = imageAlt
         this.imageCaption = imageCaption
     }

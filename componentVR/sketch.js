@@ -38,7 +38,7 @@ function draw() {
                 story.currentStep = 0
                 story.currentSubStep = 0
                 console.log("we have ending...")
-                window.location.href = '/landing.html'
+                window.location.href = '/index.html'
             } else {
                 // if some action
                 if (story.steps[story.currentStep].actions.length > 0) {
