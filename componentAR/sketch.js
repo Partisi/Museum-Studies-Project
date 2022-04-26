@@ -41,13 +41,13 @@ function mousePressed() {
 
 let loaded = false // used to load once
 
+
 // Main Drawing
 function draw() {
     background(0)
     if (startClockExperience) {
         if (loaded === false) {
             loaded = true
-            console.log("we begin")
             createClockExperience()
         }
     }
@@ -75,6 +75,11 @@ function draw() {
         }
     }
 }
+
+function windowResized() {
+    console.log("resized")
+    resizeCanvas(windowWidth, windowHeight);
+  }
 
 function introSpeak(dialoguePiece) {
     console.log(dialoguePiece)
