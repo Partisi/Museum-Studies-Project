@@ -29,7 +29,7 @@ let screenshottedEnv = null // screenshot of AR space of camera
 let startClockExperience = false // begins the animation of the clock to VR
 
 // For taking the screenshot
-function mouseClicked() {
+function mousePressed() {
     if (loaded === false) {
         screenshottedEnv = capture
         startClockExperience = true
