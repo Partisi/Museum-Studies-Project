@@ -14,11 +14,15 @@ class Dialogue {
         if (this.env === 'AR') {
             overlayElement = document.getElementById('intro-dialogue')
             overlayElement.innerHTML = `
-                <section id="dialogue-container">
-                    <div id="msg-container">    
-                        <p>${this.msg}</p>
-                    </div>
-                </section>
+            <section id="dialogue-container">
+            <div id="msg-container">    
+                <p>${this.msg}</p>
+            </div>
+            <div id="who-container">
+                <img src=${this.image} />
+            </div>
+           
+        </section>
             `
             overlayElement.style.display = "block"
         } else {

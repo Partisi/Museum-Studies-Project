@@ -30,11 +30,9 @@ let startClockExperience = false // begins the animation of the clock to VR
 
 // For taking the screenshot
 function mousePressed() {
-    if (loaded === false) {
-        console.log(capture)
+    if (loaded === false && storyAR.currentStep === 1) {
         screenshottedEnv = createImage(capture.width, capture.height);
         screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
-
         startClockExperience = true
     }
 }
@@ -51,9 +49,16 @@ function draw() {
             createClockExperience()
         }
     }
+
+    // For initial dialogue
+    if (loaded === false && storyAR.currentStep === 0) {
+        loaded = true
+        loadDialogue()
+    }
+
     if (!!screenshottedEnv) {
         //image(screenshottedEnv, 0, 0, 0, windowHeight);
-        image(screenshottedEnv, 0, 0, 0, windowHeight);
+        image(screenshottedEnv, 0, 0, width, height);
     } else {
         image(capture, 0, 0, width, height);
     }
@@ -79,29 +84,30 @@ function draw() {
 function windowResized() {
     console.log("resized")
     resizeCanvas(windowWidth, windowHeight);
-  }
-
-function introSpeak(dialoguePiece) {
-    console.log(dialoguePiece)
-    dialoguePiece.display()
 }
+
+async function loadDialogue() {
+    await sleep(2000)
+    storyAR.steps[0].actions[0].display()
+
+    await sleep(6000)
+    storyAR.steps[0].actions[0].hide()
+    storyAR.steps[0].actions[1].display()
+
+    await sleep(6000)
+    storyAR.steps[0].actions[1].hide()
+
+    storyAR.currentStep = 1
+    loaded = false
+}
+
 
 // Main AR Function
 async function createClockExperience() {
 
     // Shows animation
     document.getElementById("myAnimation").style.display = 'block'
-    document.getElementById('intro-dialogue').style.display = 'block'
-
-    await sleep(1000)
-    storyAR.steps[0].actions[0].display()
-
-    await sleep(4000)
-    storyAR.steps[0].actions[0].hide()
-    storyAR.steps[0].actions[1].display()
-    
-    await sleep(4000)
-    storyAR.steps[0].actions[1].hide()
+    await sleep(500)
 
     for (let i = 0; i < 100; i++) {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
