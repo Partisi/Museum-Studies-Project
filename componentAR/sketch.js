@@ -31,7 +31,10 @@ let startClockExperience = false // begins the animation of the clock to VR
 // For taking the screenshot
 function mousePressed() {
     if (loaded === false) {
-        screenshottedEnv = capture
+        console.log(capture)
+        screenshottedEnv = createImage(capture.width, capture.height);
+        screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
+
         startClockExperience = true
     }
 }
@@ -49,6 +52,7 @@ function draw() {
         }
     }
     if (!!screenshottedEnv) {
+        //image(screenshottedEnv, 0, 0, 0, windowHeight);
         image(screenshottedEnv, 0, 0, 0, windowHeight);
     } else {
         image(capture, 0, 0, 0, windowHeight);
