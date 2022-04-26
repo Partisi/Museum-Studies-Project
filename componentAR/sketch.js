@@ -82,7 +82,6 @@ function draw() {
 }
 
 function windowResized() {
-    console.log("resized")
     resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -90,12 +89,18 @@ async function loadDialogue() {
     await sleep(2000)
     storyAR.steps[0].actions[0].display()
 
-    await sleep(6000)
+    const dialogueWaitTime = 8000
+
+    await sleep(dialogueWaitTime)
     storyAR.steps[0].actions[0].hide()
     storyAR.steps[0].actions[1].display()
 
-    await sleep(6000)
+    await sleep(dialogueWaitTime)
     storyAR.steps[0].actions[1].hide()
+    storyAR.steps[0].actions[2].display()
+
+    await sleep(dialogueWaitTime)
+    storyAR.steps[0].actions[2].hide()
 
     storyAR.currentStep = 1
     loaded = false
