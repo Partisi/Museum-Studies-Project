@@ -44,7 +44,7 @@ let loaded = false // used to load once
 
 // Main Drawing
 function draw() {
-    background(0)
+    background('red')
     if (startClockExperience) {
         if (loaded === false) {
             loaded = true
@@ -55,7 +55,7 @@ function draw() {
         //image(screenshottedEnv, 0, 0, 0, windowHeight);
         image(screenshottedEnv, 0, 0, 0, windowHeight);
     } else {
-        image(capture, 0, 0, 0, windowHeight);
+        image(capture, 0, 0, width, height);
     }
 
     for (var i = 0; i < particles.length; i++) {
