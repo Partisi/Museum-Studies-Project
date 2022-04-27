@@ -28,21 +28,20 @@ function setup() {
 let screenshottedEnv = null // screenshot of AR space of camera
 let startClockExperience = false // begins the animation of the clock to VR
 
-// For taking the screenshot
-function mousePressed() {
-    if (loaded === false && storyAR.currentStep === 1) {
-        screenshottedEnv = createImage(capture.width, capture.height);
-        screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
-        startClockExperience = true
-    }
-}
+// // For taking the screenshot
+// function touchStarted() {
+//     if (loaded === false && storyAR.currentStep === 1) {
+//         saveCurrent()
+//     }
+// }
 
 let loaded = false // used to load once
 
 
 // Main Drawing
 function draw() {
-    background('red')
+    background(0)
+
     if (startClockExperience) {
         if (loaded === false) {
             loaded = true
@@ -89,7 +88,7 @@ async function loadDialogue() {
     await sleep(2000)
     storyAR.steps[0].actions[0].display()
 
-    const dialogueWaitTime = 8000
+    const dialogueWaitTime = 1000
 
     await sleep(dialogueWaitTime)
     storyAR.steps[0].actions[0].hide()
@@ -103,6 +102,14 @@ async function loadDialogue() {
     storyAR.steps[0].actions[2].hide()
 
     storyAR.currentStep = 1
+    
+
+    await sleep(2000)
+
+    screenshottedEnv = createImage(capture.width, capture.height);
+    screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
+    startClockExperience = true
+
     loaded = false
 }
 

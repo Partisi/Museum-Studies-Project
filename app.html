@@ -9,16 +9,17 @@
             margin: 0;
             padding: 0;
         }
+
         iframe {
             position: absolute;
             height: 100%;
             width: 100%;
-            background-color: pink;
             margin: 0;
             padding: 0;
             margin: -10px -4px 0px;
         }
     </style>
+
 </head>
 
 <body>
@@ -26,6 +27,7 @@
     <iframe id="iframe_vr" src="componentVR/index.html" scrolling="no" style="display: none;"></iframe>
 
     <script>
+
         function ar_experience_complete() {
             document.getElementById('iframe_ar').remove();
             document.getElementById('iframe_vr').style.display = 'block';

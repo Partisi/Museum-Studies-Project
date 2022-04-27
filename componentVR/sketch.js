@@ -40,11 +40,14 @@ async function draw() {
             window.location.href = '/index.html'
         } else {
             // if some action
+            console.log('doing some action...')
             if (storyVR.steps[storyVR.currentStep].actions.length > 0) {
                 let currentPointType = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]?.type
+                console.log(currentPointType)
                 if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
                 } else if (currentPointType === "dialogue" || currentPointType === "info") {
+                    console.log('displaying')
                     storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
                 }
             }

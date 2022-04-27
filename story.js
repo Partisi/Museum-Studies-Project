@@ -10,9 +10,9 @@ class Dialogue {
         this.env = env
     }
     display() {
-        let overlayElement
+        console.log("DISPLAYING DIALOGUE", this.env)
         if (this.env === 'AR') {
-            overlayElement = document.getElementById('intro-dialogue')
+            const overlayElement = document.getElementById('intro-dialogue')
             overlayElement.innerHTML = `
             <section id="dialogue-container">
             <div id="msg-container">    
@@ -26,7 +26,8 @@ class Dialogue {
             `
             overlayElement.style.display = "block"
         } else {
-            overlayElement = document.getElementById('overlay-container')
+            console.log('getting dialogue')
+            const overlayElement = document.getElementById('overlay-container')
             overlayElement.innerHTML = `
                 <section id="dialogue-container">
                     <div id="msg-container">    
@@ -45,6 +46,7 @@ class Dialogue {
     }
     hide() {
         let overlayElement
+        console.log('hiding....')
         if (this.env === 'AR') {
             overlayElement = document.getElementById('intro-dialogue')
         } else {
