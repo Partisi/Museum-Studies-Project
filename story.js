@@ -10,7 +10,6 @@ class Dialogue {
         this.env = env
     }
     display() {
-        console.log("DISPLAYING DIALOGUE", this.env)
         if (this.env === 'AR') {
             const overlayElement = document.getElementById('intro-dialogue')
             overlayElement.innerHTML = `
@@ -65,9 +64,10 @@ class ObjectPanel {
 
         let centerPaneHTML = ''
         this.objects.forEach((eachObject, index) => {
+            const objectInfo = Object.assign({}, ...Object.getOwnPropertyNames(eachObject).map(o => { return { [o]: eachObject[o] } }))
             centerPaneHTML += `
-                <li key=${index} class="each-pane">
-                    <img src=${eachObject.image} />
+                <li key=${index} class="each-pane" >
+                    <img src=${objectInfo.image} onclick={viewSingleInfo('${encodeURIComponent(JSON.stringify(objectInfo))}')} />
                 </li>
                 `
         })
@@ -76,7 +76,7 @@ class ObjectPanel {
             <ul>
                 ${centerPaneHTML}
             </ul>
-            <button id="continue-bttn" onclick="leavePanelDisplay()">Continue</button>
+            <button id="continue-bttn" onclick="handleContinueBttn()">Continue</button>
         </section>
         `
         overlayElement.style.display = "block"
@@ -86,15 +86,39 @@ class ObjectPanel {
         overlayElement.style.display = "none"
     }
 }
-function leavePanelDisplay() {
-    console.log("should leave pnael display")
+
+function viewSingleInfo(infoToDisplay) {
+    const objParsed = JSON.parse(decodeURIComponent(infoToDisplay))
+    const overlayElement = document.getElementById('overlay-container')
+    console.log(overlayElement.innerHTML)
+    overlayElement.innerHTML = ''
+    console.log(objParsed)
+    console.log(overlayElement.innerHTML)
+    overlayElement.innerHTML = `
+        <section id="object-info-container">
+            <div class="top-info">
+                <img src=${objParsed.image} alt=${objParsed.imageAlt} />
+                <p>${objParsed.imageCaption}</p>
+            </div>
+            <div class="bottom-info">
+                <h2>${objParsed.header}</h2>
+                <p class="desc">${objParsed.description}</p>
+                <button class="button-continue" onclick={handleContinueBttn()}>
+                    <p>Continue</p>
+                    <div class="button-border button-border-left"></div>
+                    <div class="button-border button-border-top"></div>
+                    <div class="button-border button-border-right"></div>
+                    <div class="button-border button-border-bottom"></div>
+                </button>
+            </div>
+        </section>
+        `
 }
 
 // Info that is displayed when object is found
 class ObjectInfo {
-    constructor({ name, header, description, image, imageAlt, imageCaption }) {
+    constructor({ header, description, image, imageAlt, imageCaption }) {
         this.type = "info"
-        this.name = name
         this.header = header
         this.description = description
         // this.image = image
