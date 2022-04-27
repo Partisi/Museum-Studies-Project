@@ -88,7 +88,7 @@ async function loadDialogue() {
     await sleep(2000)
     storyAR.steps[0].actions[0].display()
 
-    const dialogueWaitTime = 1000
+    const dialogueWaitTime = 100
 
     await sleep(dialogueWaitTime)
     storyAR.steps[0].actions[0].hide()
@@ -151,7 +151,7 @@ async function createClockExperience() {
         [255, 229, 79],
         40, -4
     ))
-    await sleep(8000) // after set time, mvoes into VR space
+    await sleep(1000) // after set time, mvoes into VR space
 
     console.log('move on...')
     window.parent.ar_experience_complete();

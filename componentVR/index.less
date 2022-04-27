@@ -20,7 +20,14 @@
 
 // Blur background when info display
 .blur-background {
-    backdrop-filter: blur(3px);
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // bottom: 0;
+    // z-index: 10;
+    // filter: blur(3px);
+    // background-color: blue;
 }
 
 /* Dialogue Container */
@@ -121,6 +128,49 @@
             text-align: center
         }
 
+    }
+
+
+}
+
+#info-panel {
+    width: calc(100% - 96px);
+    height: calc(100vh - 96px);
+    margin: 48px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        height: 100%;
+        width: 100%;
+        background-color: blue;
+
+        z-index: 1000;
+
+        .each-pane {
+            img {
+                width: 100%;
+                max-width: 100%;
+                max-height: 400px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    #continue-bttn {
+        background-color: red;
+        width: 100%;
     }
 
 

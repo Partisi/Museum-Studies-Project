@@ -26,7 +26,6 @@ class Dialogue {
             `
             overlayElement.style.display = "block"
         } else {
-            console.log('getting dialogue')
             const overlayElement = document.getElementById('overlay-container')
             overlayElement.innerHTML = `
                 <section id="dialogue-container">
@@ -46,7 +45,6 @@ class Dialogue {
     }
     hide() {
         let overlayElement
-        console.log('hiding....')
         if (this.env === 'AR') {
             overlayElement = document.getElementById('intro-dialogue')
         } else {
@@ -54,6 +52,42 @@ class Dialogue {
         }
         overlayElement.style.display = "none"
     }
+}
+
+class ObjectPanel {
+    constructor({ objects }) {
+        this.objects = objects
+        this.type = "info"
+    }
+
+    display() {
+        const overlayElement = document.getElementById('overlay-container')
+
+        let centerPaneHTML = ''
+        this.objects.forEach((eachObject, index) => {
+            centerPaneHTML += `
+                <li key=${index} class="each-pane">
+                    <img src=${eachObject.image} />
+                </li>
+                `
+        })
+        overlayElement.innerHTML = `
+        <section id="info-panel">
+            <ul>
+                ${centerPaneHTML}
+            </ul>
+            <button id="continue-bttn" onclick="leavePanelDisplay()">Continue</button>
+        </section>
+        `
+        overlayElement.style.display = "block"
+    }
+    hide() {
+        const overlayElement = document.getElementById('overlay-container')
+        overlayElement.style.display = "none"
+    }
+}
+function leavePanelDisplay() {
+    console.log("should leave pnael display")
 }
 
 // Info that is displayed when object is found
@@ -64,38 +98,9 @@ class ObjectInfo {
         this.header = header
         this.description = description
         // this.image = image
-        this.image = '../assets/cat.jpeg'
+        this.image = image
         this.imageAlt = imageAlt
         this.imageCaption = imageCaption
-    }
-    display() {
-        const overlayElement = document.getElementById('overlay-container')
-        overlayElement.classList.add('blur-background')
-        overlayElement.innerHTML = `
-        <section id="object-info-container">
-            <div class="top-info">
-                <img src=${this.image} alt=${this.imageAlt} />
-                <p>${this.imageCaption}</p>
-            </div>
-            <div class="bottom-info">
-                <h2>${this.header}</h2>
-                <p class="desc">${this.description}</p>
-                <button class="button-continue" onclick={handleContinueBttn()}>
-                    <p>Continue</p>
-                    <div class="button-border button-border-left"></div>
-                    <div class="button-border button-border-top"></div>
-                    <div class="button-border button-border-right"></div>
-                    <div class="button-border button-border-bottom"></div>
-                </button>
-            </div>
-        </section>
-        `
-        overlayElement.style.display = "block"
-    }
-    hide() {
-        const overlayElement = document.getElementById('overlay-container')
-        overlayElement.classList.remove('blur-background')
-        overlayElement.style.display = "none"
     }
 }
 
@@ -140,21 +145,23 @@ const stepsVR = [
     { // On click of information, displays information
         id: 3,
         actions: [
-            new ObjectInfo({
-                name: "",
-                header: "What’s a What-not?",
-                description: "The American whatnot is a fancy carved shelf that was fashionable during the first half of the 1800s. It was often used to display decorative objects such as china, ornaments, or “what-not.”",
-                image: null,
-                imageAlt: "What-not shelf in the 1940’s",
-                imageCaption: "This was here since the 1800s: when this photo was taken in the 1940s, it was mainly used to display glassware in the family room."
-            }),
-            new ObjectInfo({
-                name: "",
-                header: "Let’s dive into the designer’s mind!",
-                description: "As shown in this photo, the shelf is made up of elaborate hand carvings, which can also be seen on the",
-                image: null,
-                imageAlt: "",
-                imageCaption: "This diagram shows the artistry of the top shelf’s carving."
+            new ObjectPanel({
+                objects: [
+                    new ObjectInfo({
+                        header: "What’s a What-not?",
+                        description: "The American whatnot is a fancy carved shelf that was fashionable during the first half of the 1800s. It was often used to display decorative objects such as china, ornaments, or “what-not.” <br />This what-not has been here since the 1800s: when this photo was taken in the 1940s, it was mainly used to display glassware in the family room.",
+                        image: '../assets/objects/shelf1.png',
+                        imageAlt: "A 5-tiered, delicately carved wooden shelf, approximately 5’2” or 160 cm high, holding a number of glass objects such as vases, cups, and bowls.",
+                        imageCaption: "A black and white image of a carved mahogany shelf, roughly the height of a standard fridge, held up by thin, curvy, wooden dowels. With its smooth and glossy finish, the what-not is usually finely crafted to display expensive ornaments."
+                    }),
+                    new ObjectInfo({
+                        header: "The Lives of the Irish servants",
+                        description: "Households like the Tredwells’ typically had four servants: a cook, kitchen helper, parlor maid, and a “second girl” who assisted with cleaning. The servants usually got up before dawn to prepare for the day. <br /> While the cook started breakfast, the kitchen maid set the table in the family room. The parlor maid and the “second girl” tidied the rooms, dusting furniture such as the what-not.",
+                        image: '../assets/objects/shelf2.png',
+                        imageAlt: "A woman wearing a maid’s dress, apron, and bonnet, sweeps the floor of a room. Behind her a small table holds a vase of flowers.",
+                        imageCaption: "A black and white drawing of a maid cleaning the floor of a front parlor. She pauses in the middle of her work with a somber expression."
+                    })
+                ]
             })
         ]
     },
@@ -181,21 +188,23 @@ const stepsVR = [
     { // On click of information, displays information
         id: 7,
         actions: [
-            new ObjectInfo({
-                name: "",
-                header: "Some sofa header",
-                description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here.<br></br> The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
-                image: null,
-                imageAlt: "",
-                imageCaption: "This is a red silk sofa..."
-            }),
-            new ObjectInfo({
-                name: "",
-                header: "A typical day in the family room",
-                description: "This room served as an informal sitting room, where they engaged in private activities such as family dinners, reading, playing, or schoolwork. Since the ceilings in the basement were lower than the rest of the house, it was the warmest floor in the winter when the only source of heat was the coal fireplace. A half story below ground, it was also cooler than the rest of the house in hot weather. This made it the perfect place to take a nap!",
-                image: null,
-                imageAlt: "",
-                imageCaption: "",
+            new ObjectPanel({
+                objects: [
+                    new ObjectInfo({
+                        header: "Some sofa header",
+                        description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here.<br></br> The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
+                        image: null,
+                        imageAlt: "",
+                        imageCaption: "This is a red silk sofa..."
+                    }),
+                    new ObjectInfo({
+                        header: "A typical day in the family room",
+                        description: "This room served as an informal sitting room, where they engaged in private activities such as family dinners, reading, playing, or schoolwork. Since the ceilings in the basement were lower than the rest of the house, it was the warmest floor in the winter when the only source of heat was the coal fireplace. A half story below ground, it was also cooler than the rest of the house in hot weather. This made it the perfect place to take a nap!",
+                        image: null,
+                        imageAlt: "",
+                        imageCaption: "",
+                    })
+                ]
             })
         ],
     },
