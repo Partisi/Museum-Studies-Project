@@ -16,9 +16,22 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+
+    <script>
+        const images = []
+        images[0] = '/assets/landing/landing1.jpeg'
+        images[1] = '/assets/landing/landing2.jpeg'
+
+        function changePicture() {
+            let selectedImg = images[Math.floor(Math.random() * images.length)]
+            document.getElementById('background-image').src = selectedImg
+        }
+        window.onload = changePicture
+    </script>
 </head>
 
 <body id="landing-page">
+    <img id="background-image" src="assets/landing/landing1.jpeg" />
     <section id="inner-landing-page">
         <h1 id="main-title">Find My Friends</h1>
         <div>

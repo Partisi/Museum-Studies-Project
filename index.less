@@ -21,7 +21,6 @@ h6 {
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 p {
@@ -37,8 +36,16 @@ p {
 
 // Landing Page
 #landing-page {
-    background-image: url('./assets/merchanthouseimg.jpeg');
-    background-repeat: no-repeat;
+
+
+    #background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
 
     #inner-landing-page {
         background-color: @primary2;
