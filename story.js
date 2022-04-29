@@ -10,37 +10,24 @@ class Dialogue {
         this.env = env
     }
     display() {
+        let overlayElement
         if (this.env === 'AR') {
-            const overlayElement = document.getElementById('intro-dialogue')
-            overlayElement.innerHTML = `
-            <section id="dialogue-container">
-            <div id="msg-container">    
-                <p>${this.msg}</p>
-            </div>
-            <div id="who-container">
-                <img src=${this.image} />
-            </div>
-           
-        </section>
-            `
-            overlayElement.style.display = "block"
+            overlayElement = document.getElementById('intro-dialogue')
         } else {
-            const overlayElement = document.getElementById('overlay-container')
-            overlayElement.innerHTML = `
+            overlayElement = document.getElementById('overlay-container')
+        }
+        overlayElement.innerHTML = `
                 <section id="dialogue-container">
                     <div id="msg-container">    
                         <p>${this.msg}</p>
-                        <button onclick={continueDialogue()}>Continue</button>
+                        <button onclick={continueDialogue()}><img src="../assets/nexticon.png" /></button>
                     </div>
                     <div id="who-container">
                         <img src=${this.image} />
                     </div>
-                   
                 </section>
             `
-            overlayElement.style.display = "block"
-        }
-
+        overlayElement.style.display = "block"
     }
     hide() {
         let overlayElement
@@ -130,7 +117,7 @@ function getAudioIcon() {
     if (sounds.muted) {
         return "../assets/mute.svg"
     } else {
-       return "../assets/speaker.svg"
+        return "../assets/speaker.svg"
     }
 }
 
@@ -158,8 +145,7 @@ const stepsAR = [
         actions: [
             new Dialogue({ who: "Clock", env: 'AR', msg: "Hello! My name is Clementine. I am a dark brown wooden clock shaped like a pentagon and my size is slightly bigger than a cereal box. I am simple and sturdy, and decorated with an inlaid butterfly" }),
             new Dialogue({ who: "Clock", env: 'AR', msg: "I have lived here since the Tredwells first moved into the house in 1835. After the youngest daughter Gertrude passed away in 1933, I watched as this house turned into a museum, preserving its historical past." }),
-            new Dialogue({ who: "Clock", env: 'AR', msg: "I'm bored watching people go by; let’s play a game to pass the time!" })
-
+            new Dialogue({ who: "Clock", env: 'AR', msg: "I'm bored watching people go by; let’s play a game to pass the time! I want to introduce my friends to you, but they’re shy. If you can solve some of my riddles, they’re happy to meet you!" })
         ]
     },
     { // the AR experience w/ camera is enabled

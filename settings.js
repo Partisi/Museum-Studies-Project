@@ -32,7 +32,6 @@ function changeMuted() {
 }
 
 function audioIcon(callingFromParent = false) {
-    console.log(muted)
     if (muted) {
         if (callingFromParent) {
             return "./assets/mute.svg"

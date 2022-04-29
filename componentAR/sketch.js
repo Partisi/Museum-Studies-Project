@@ -26,8 +26,6 @@ function setup() {
             }
         }
     })
-
-
     capture.hide()
 }
 
@@ -48,6 +46,21 @@ let loaded = false // used to load once
 function draw() {
     background(0)
 
+    // For initial dialogue
+    if (loaded === false && storyAR.currentStep === 0 && capture.loadedmetadata) {
+        loaded = true
+        if (storyAR.currentStep === 0) { sounds.muted = parse(localStorage.getItem('muted')) }
+        if (storyAR.steps[storyAR.currentStep].actions.length > 0) {
+            storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].display()
+        }
+    }
+
+    if (!startClockExperience && storyAR.currentStep === 1) {
+        screenshottedEnv = createImage(capture.width, capture.height);
+        screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
+        startClockExperience = true
+    }
+
     if (startClockExperience) {
         if (loaded === false) {
             loaded = true
@@ -55,13 +68,8 @@ function draw() {
         }
     }
 
-    // For initial dialogue
-    if (loaded === false && storyAR.currentStep === 0) {
-        loaded = true
-        sounds.muted = parse(localStorage.getItem('muted'))
-        loadDialogue()
-    }
 
+    // Displays
     if (!!screenshottedEnv) {
         //image(screenshottedEnv, 0, 0, 0, windowHeight);
         image(screenshottedEnv, 0, 0, width, height);
@@ -91,35 +99,22 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
-async function loadDialogue() {
-    await sleep(2000)
-    storyAR.steps[0].actions[0].display()
-
-    const dialogueWaitTime = 500
-
-    await sleep(dialogueWaitTime)
-    storyAR.steps[0].actions[0].hide()
-    storyAR.steps[0].actions[1].display()
-
-    await sleep(dialogueWaitTime)
-    storyAR.steps[0].actions[1].hide()
-    storyAR.steps[0].actions[2].display()
-
-    await sleep(dialogueWaitTime)
-    storyAR.steps[0].actions[2].hide()
-
-    storyAR.currentStep = 1
-
-
-    await sleep(2000)
-
-    screenshottedEnv = createImage(capture.width, capture.height);
-    screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
-    startClockExperience = true
-
+// On Dialogue Next
+function continueDialogue() {
+    if (storyAR.steps[storyAR.currentStep].actions.length > storyAR.currentSubStep + 1) {
+        let currentAction = storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep]
+        currentAction.hide()
+        storyAR.currentSubStep += 1
+    } else { // moves onto next step (NOT substep)
+        if ((storyAR.steps[storyAR.currentStep].actions.length === storyAR.currentSubStep + 1)) {
+            let currentAction = storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep]
+            currentAction.hide()
+        }
+        storyAR.currentStep += 1
+        storyAR.currentSubStep = 0
+    }
     loaded = false
 }
-
 
 // Main AR Function
 async function createClockExperience() {
@@ -129,7 +124,7 @@ async function createClockExperience() {
     !sounds.muted && sounds.magic.play()
     await sleep(500)
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 300; i++) {
         particles.push(new Particle(myCanvas.width / 2, myCanvas.height / 2))
     }
 
@@ -175,12 +170,12 @@ async function createClockExperience() {
 const particles = []
 class Particle {
     constructor(x, y) {
-        this.xPos = x
-        this.yPos = y
-        this.xSpeed = random(-1, 1) * random(1, 2)
-        this.ySpeed = random(-1, 1) * random(1, 2)
+        this.xPos = random(x - 50, x + 50)
+        this.yPos = random(y - 10, y + 20)
+        this.xSpeed = random(-1, 1) * random(1, 1.1)
+        this.ySpeed = random(-1, 1) * random(0.3, 0.6)
 
-        this.size = random(15, 30)
+        this.size = random(10, 20)
 
         this.opacity = 100
 
@@ -213,13 +208,13 @@ class Particle {
         }
     }
 }
-const tailLength = 80
+const tailLength = 100
 let trail = []
 const orbs = []
 class MagicalOrb {
     constructor(x, y, color, size, angle) {
         this.x = x
-        this.y = y
+        this.y = y + 30
         this.scalar = 200
         this.angle = angle
         this.speed = 0.05
