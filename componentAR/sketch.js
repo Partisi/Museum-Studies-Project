@@ -146,13 +146,13 @@ async function createClockExperience() {
         myCanvas.width / 2 - 10,
         myCanvas.height / 2,
         [252, 78, 3],
-        50, -4
+        50, -4.5
     ))
     orbs.push(new MagicalOrb(
         myCanvas.width / 2,
         myCanvas.height / 2,
         [255, 229, 79],
-        40, -4
+        40, -4.5
     ))
 
     await sleep(5000) // after set time, mvoes into VR space
@@ -215,9 +215,9 @@ class MagicalOrb {
     constructor(x, y, color, size, angle) {
         this.x = x
         this.y = y + 30
-        this.scalar = 200
+        this.scalar = 150
         this.angle = angle
-        this.speed = 0.05
+        this.speed = 0.04
         this.col = color
         this.opacity = 100
         this.alive = true
@@ -234,7 +234,7 @@ class MagicalOrb {
         ellipse(x, y, this.size, this.size);
         trail.push({ x, y });
         this.angle += this.speed;
-        this.scalar += this.speed;
+        this.scalar += this.speed * 4;
 
         if (this.opacity <= 60) {
             this.opacity -= 0.2
