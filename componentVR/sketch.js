@@ -4,7 +4,7 @@ let world
 let myFamilyRoom
 let storyVR
 const sounds = {
-    muted: true,
+    muted: false,
 }
 
 
@@ -24,7 +24,6 @@ function setup() {
     // <-----------------------> //
     // VR Space 
     storyVR = new Story(stepsVR)
-    console.log(storyVR)
 
     noCanvas()
     world = new World('VRScene');
@@ -45,6 +44,12 @@ async function draw() {
 
     // Will RUN ONCE
     if (loaded === false && window.parent.inStateVR) {
+
+        // if first time running
+        if (storyVR.currentStep === 0 && storyVR.currentSubStep === 0) {
+            sounds.muted = parse(localStorage.getItem('muted'))
+            console.log(sounds.muted)
+        }
 
         // if reached ending
         if (storyVR.currentStep === 8 && storyVR.currentSubStep === 2) {
@@ -72,7 +77,7 @@ function playAudioDependingOnLocation(currentLocation) {
     // Turns off all sounds
     stopAllAudio()
 
-    if (sounds.muted) { 
+    if (sounds.muted) {
         return
     }
 

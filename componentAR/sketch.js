@@ -4,7 +4,7 @@ let capture
 let storyAR
 
 const sounds = {
-    muted: true,
+    muted: false
 }
 
 // Setup
@@ -58,6 +58,7 @@ function draw() {
     // For initial dialogue
     if (loaded === false && storyAR.currentStep === 0) {
         loaded = true
+        sounds.muted = parse(localStorage.getItem('muted'))
         loadDialogue()
     }
 

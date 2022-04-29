@@ -51,7 +51,13 @@
             <button id="spanish" class="button-unselected" onclick="changeLanguage('spanish')">Español</button>
             <button id="english" class="button-selected" onclick="changeLanguage('english')">English</button>
         </div>
+        <button id="mute-settings" onclick="changeMuted()"><img src="" /></button>
     </section>
+
+    <script>
+        document.getElementById('mute-settings')
+            .getElementsByTagName('img')[0].src = audioIcon(true)
+    </script>
 
 </body>
 
