@@ -186,6 +186,8 @@
                 border-style: solid;
                 border-color: rgb(109, 84, 58) rgb(24, 19, 13) rgb(24, 19, 13) rgb(109, 84, 58);
 
+                margin: 4px;
+
                 .outer-box {
                     border: 12px solid rgb(65, 40, 16);
 
@@ -203,7 +205,7 @@
                             border-style: solid;
                             border-color: rgb(207, 166, 0) rgb(207, 166, 0) rgb(145, 110, 0) rgb(145, 110, 0);
                             width: calc(100% - 30px);
-                            max-width: 100%;
+                            max-width: 400px;
                             max-height: 400px;
                             object-fit: contain;
                         }
@@ -284,6 +286,21 @@
     h2 {
         margin: 0;
         padding: 0;
+    }
+
+    #mute-bttn {
+        background: none;
+        border: none;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        img {
+            width: 24px;
+            height: 24px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
 
     .top-info {

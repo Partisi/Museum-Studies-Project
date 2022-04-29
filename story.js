@@ -107,6 +107,7 @@ function viewSingleInfo(infoToDisplay) {
             <button class="button-go-back" onclick={goBack()}>
                 <p>Go Back</p>
             </button>
+            <button id="mute-bttn" onclick="toggleMute()"><img src="${audioIcon()}" /></button>
             <div class="top-info">
                 <img src=${objParsed.image} alt=${objParsed.imageAlt} />
                 <p>${objParsed.imageCaption}</p>
@@ -117,6 +118,19 @@ function viewSingleInfo(infoToDisplay) {
             </div>
         </section>
         `
+}
+function audioIcon() {
+    if (sounds.muted) {
+        return "../assets/mute.svg"
+    } else {
+        return "../assets/speaker.svg"
+    }
+}
+function toggleMute() {
+    sounds.muted = !sounds.muted
+    const soundElem = document.getElementById('mute-bttn').getElementsByTagName('img')[0]
+    console.log(soundElem)
+    soundElem.src = audioIcon()
 }
 
 function goBack() {
@@ -236,7 +250,14 @@ const stepsVR = [
                         image: "../assets/objects/sofa2.png",
                         imageAlt: "A drawing of a family sitting and chatting around the dining table.",
                         imageCaption: "A drawing rendered in black and white of seven family members, sitting at a dining table covered in a white tablecloth. They are drinking tea and chatting to one another animatedly.",
-                    })
+                    }),
+                    new ObjectInfo({
+                        header: "Naps and Nightcaps",
+                        description: "",
+                        image: "../assets/objects/sofa3.png",
+                        imageAlt: "Two diary entries of John Drake Skidmore.",
+                        imageCaption: "The diary entries of John Drake Skidmore, written in 1858. He was a 28-year old neighbor to the Tredwells, who often wrote about the activities in his own family room in his diary.",
+                    }),
                 ]
             })
 
