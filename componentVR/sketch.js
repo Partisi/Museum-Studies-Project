@@ -72,6 +72,10 @@ function playAudioDependingOnLocation(currentLocation) {
     // Turns off all sounds
     stopAllAudio()
 
+    if (sounds.muted) { 
+        return
+    }
+
     sounds.teleport.setVolume(0.1)
     sounds.teleport.play()
 
