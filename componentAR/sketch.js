@@ -3,10 +3,16 @@ let myCanvas
 let capture
 let storyAR
 
+const sounds = {
+    muted: true,
+}
+
 // Setup
 function setup() {
     // AR Space
 
+    sounds.magic = loadSound('../audio/misc/harp.wav')
+    sounds.teleport = loadSound('../audio/misc/teleport.wav')
 
     storyAR = new Story(stepsAR)
     myCanvas = createCanvas(windowWidth, windowHeight);
@@ -88,7 +94,7 @@ async function loadDialogue() {
     await sleep(2000)
     storyAR.steps[0].actions[0].display()
 
-    const dialogueWaitTime = 100
+    const dialogueWaitTime = 500
 
     await sleep(dialogueWaitTime)
     storyAR.steps[0].actions[0].hide()
@@ -102,7 +108,7 @@ async function loadDialogue() {
     storyAR.steps[0].actions[2].hide()
 
     storyAR.currentStep = 1
-    
+
 
     await sleep(2000)
 
@@ -119,6 +125,7 @@ async function createClockExperience() {
 
     // Shows animation
     document.getElementById("myAnimation").style.display = 'block'
+    !sounds.muted && sounds.magic.play()
     await sleep(500)
 
     for (let i = 0; i < 100; i++) {
@@ -151,7 +158,11 @@ async function createClockExperience() {
         [255, 229, 79],
         40, -4
     ))
-    await sleep(1000) // after set time, mvoes into VR space
+
+    await sleep(5000) // after set time, mvoes into VR space
+
+    !sounds.muted && sounds.teleport.play()
+    await sleep(3000)
 
     console.log('move on...')
     window.parent.ar_experience_complete();
