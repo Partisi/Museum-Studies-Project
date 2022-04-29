@@ -5,7 +5,7 @@ class Dialogue {
         this.type = "dialogue"
         this.who = who
         this.msg = msg
-        this.image = '../assets/mrclock-removebg-preview.png'
+        this.image = '../assets/mrclock.png'
 
         this.env = env
     }
