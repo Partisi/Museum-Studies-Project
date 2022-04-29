@@ -72,6 +72,7 @@ class ObjectPanel {
                 `
         })
         overlayElement.innerHTML = `
+        <div class="blur-background"></div>
         <section id="info-panel">
             <ul>
                 ${centerPaneHTML}
@@ -91,6 +92,8 @@ function viewSingleInfo(infoToDisplay) {
     const objParsed = JSON.parse(decodeURIComponent(infoToDisplay))
     const overlayElement = document.getElementById('overlay-container')
     overlayElement.innerHTML = `
+        <div class="blur-background"></div>
+        <img id="info-frame" src="../assets/frame.png" />
         <section id="object-info-container">
             <button class="button-go-back" onclick={goBack()}>
                 <p>Go Back</p>

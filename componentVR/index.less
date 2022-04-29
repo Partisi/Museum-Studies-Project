@@ -20,14 +20,13 @@
 
 // Blur background when info display
 .blur-background {
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;
-    // z-index: 10;
-    // filter: blur(3px);
-    // background-color: blue;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    backdrop-filter: blur(1.5px);
 }
 
 /* Dialogue Container */
@@ -168,6 +167,8 @@
     }
 
     #continue-bttn {
+        position: relative;
+        z-index: 12;
         background-color: red;
         width: 100%;
     }
@@ -175,19 +176,34 @@
 
 }
 
-/* Info Container */
+/* Info Container SINGLE */
+#info-frame {
+    position: absolute;
+
+    top: 50%;
+    /* position the top  edge of the element at the middle of the parent */
+    left: 50%;
+    /* position the left edge of the element at the middle of the parent */
+
+    transform: translate(-50%, -50%);
+
+
+    width: 500px;
+    height: auto;
+    z-index: 10;
+}
+
 #object-info-container {
+    position: relative;
     background-color: #F8F4E3;
-    border-radius: 4px;
-    width: calc(100% - 96px);
-    max-width: 600px;
-    min-width: 400px;
-    height: calc(100vh - 96px);
+    width: 394px;
+    height: calc(100vh - 250px);
     margin: auto;
-    margin-top: 48px;
+    margin-top: 125px;
 
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     overflow-y: scroll;
+    z-index: 2000;
 
     h2 {
         margin: 0;

@@ -1,6 +1,6 @@
 class FamilyRoom {
     constructor() {
-        this.selectedPoint = 0 // where the user starts out
+        this.selectedPoint = 3 // where the user starts out
         this.roomPoints = [
             {
                 id: 0,
