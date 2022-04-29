@@ -69,7 +69,13 @@ class ObjectPanel {
             const objectInfo = Object.assign({}, ...Object.getOwnPropertyNames(eachObject).map(o => { return { [o]: eachObject[o] } }))
             centerPaneHTML += `
                 <li key=${index} class="each-pane" >
-                    <img src=${objectInfo.image} onclick={viewSingleInfo('${encodeURIComponent(JSON.stringify(objectInfo))}')} />
+                    <div class="panel-frame">
+                        <div class="outer-box">
+                            <div class="inner-box">
+                                <img src=${objectInfo.image} onclick={viewSingleInfo('${encodeURIComponent(JSON.stringify(objectInfo))}')} />
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 `
         })

@@ -157,12 +157,51 @@
         z-index: 1000;
 
         .each-pane {
-            img {
-                width: 100%;
-                max-width: 100%;
-                max-height: 400px;
-                object-fit: contain;
+
+            .panel-frame {
+                // Design from https://codepen.io/john_skowronski/pen/Egqqjy
+                box-shadow: 4px 6px 12px 0 black;
+                border-width: 5px;
+                border-style: solid;
+                border-color: rgb(109, 84, 58) rgb(24, 19, 13) rgb(24, 19, 13) rgb(109, 84, 58);
+
+                transition: transform 1s;
+
+                &:hover {
+                    transform: scale(1.05);
+                    cursor: pointer;
+                }
+
+                .outer-box {
+                    border: 12px solid rgb(65, 40, 16);
+
+                    .inner-box {
+                        border-width: 5px;
+                        border-style: solid;
+                        border-color: rgb(24, 19, 13) rgb(109, 84, 58) rgb(109, 84, 58) rgb(24, 19, 13);
+
+                        img {
+                            display: block;
+                            clear: both;
+                            padding: 12px;
+                            background-color: rgb(255, 249, 224);
+                            border-width: 3px;
+                            border-style: solid;
+                            border-color: rgb(207, 166, 0) rgb(207, 166, 0) rgb(145, 110, 0) rgb(145, 110, 0);
+                            width: calc(100% - 30px);
+                            max-width: 100%;
+                            max-height: 400px;
+                            object-fit: contain;
+                        }
+                    }
+                }
             }
+
+
+
+
+
+
         }
     }
 

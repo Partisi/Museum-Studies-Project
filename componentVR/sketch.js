@@ -4,7 +4,7 @@ let world
 let myFamilyRoom
 let storyVR
 const sounds = {
-    muted: false,
+    muted: true,
 }
 
 
@@ -203,10 +203,6 @@ class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
             x, y, z, onClick: function (e) {
-                console.log(sounds)
-                // sounds.teleport.setVolume(0.1)
-
-                // sounds.teleport.play(0, 1, 0.1);
                 myFamilyRoom.changeValue(toLocationName)
             }
         })
