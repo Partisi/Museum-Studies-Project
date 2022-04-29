@@ -223,23 +223,19 @@ const stepsVR = [
         actions: [
             new ObjectPanel({
                 objects: [
-                    new ObjectPanel({
-                        objects: [
-                            new ObjectInfo({
-                                header: "An Out-of-Fashion Icon",
-                                description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here. <br /> The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
-                                image: "../assets/objects/sofa1.png",
-                                imageAlt: "The left-side of a floral patterned sofa which is approximately 3’ or 90 cm high, 4’4” or 130 cm wide. A tubular cushion rests against its curved arm.",
-                                imageCaption: "A zoomed in, black and white photo of a silk sofa with carved feet shaped like an eagle in flight."
-                            }),
-                            new ObjectInfo({
-                                header: "A Typical Day in the Family Room",
-                                description: "This room served as an informal sitting room, where they engaged in private activities such as family dinners, reading, or schoolwork. <br /> Since the basement’s ceilings were lower than the rest of the house, it was the warmest floor during winter when the only source of heat was the fireplace. A half story below ground, it was also cooler in hot weather. This made it the perfect place to take a nap!",
-                                image: "../assets/objects/sofa2.png",
-                                imageAlt: "A drawing of a family sitting and chatting around the dining table.",
-                                imageCaption: "A drawing rendered in black and white of seven family members, sitting at a dining table covered in a white tablecloth. They are drinking tea and chatting to one another animatedly.",
-                            })
-                        ]
+                    new ObjectInfo({
+                        header: "An Out-of-Fashion Icon",
+                        description: "This 1820’s red silk sofa is an example of the Federal style of massive, bold, and elaborately carved furniture. Sometimes this style of furniture would showcase American nationalistic symbols like the eagle here. <br /> The Tredwells brought this sofa from their first home on Dey Street in 1835. When they redecorated in 1850, they moved this sofa to the downstairs family room as by that time it was out of style.",
+                        image: "../assets/objects/sofa1.png",
+                        imageAlt: "The left-side of a floral patterned sofa which is approximately 3’ or 90 cm high, 4’4” or 130 cm wide. A tubular cushion rests against its curved arm.",
+                        imageCaption: "A zoomed in, black and white photo of a silk sofa with carved feet shaped like an eagle in flight."
+                    }),
+                    new ObjectInfo({
+                        header: "A Typical Day in the Family Room",
+                        description: "This room served as an informal sitting room, where they engaged in private activities such as family dinners, reading, or schoolwork. <br /> Since the basement’s ceilings were lower than the rest of the house, it was the warmest floor during winter when the only source of heat was the fireplace. A half story below ground, it was also cooler in hot weather. This made it the perfect place to take a nap!",
+                        image: "../assets/objects/sofa2.png",
+                        imageAlt: "A drawing of a family sitting and chatting around the dining table.",
+                        imageCaption: "A drawing rendered in black and white of seven family members, sitting at a dining table covered in a white tablecloth. They are drinking tea and chatting to one another animatedly.",
                     })
                 ]
             })
