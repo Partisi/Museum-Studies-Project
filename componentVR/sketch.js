@@ -3,10 +3,23 @@
 let world
 let myFamilyRoom
 let storyVR
+const sounds = {
+    muted: false,
+}
 
 
 // Setup
 function setup() {
+    sounds.fireplace = loadSound('../audio/misc/fireplace.wav')
+    sounds.teleport = loadSound('../audio/misc/teleport.wav')
+    sounds.teleport.setVolume(0.1)
+    sounds.chatter = loadSound('../audio/misc/chatter.wav')
+    sounds.laugh = loadSound('../audio/misc/laugh.wav')
+    sounds.street = loadSound('../audio/misc/street.wav')
+    sounds.horseNeigh = loadSound('../audio/misc/horseneigh.wav')
+    sounds.horseWalk = loadSound('../audio/misc/horseoutside.wav')
+
+    sounds.found = loadSound('../audio/misc/found.wav')
 
     // <-----------------------> //
     // VR Space 
@@ -31,7 +44,8 @@ async function draw() {
     }
 
     // Will RUN ONCE
-    if (loaded === false) {
+    if (loaded === false && window.parent.inStateVR) {
+
         // if reached ending
         if (storyVR.currentStep === 8 && storyVR.currentSubStep === 2) {
             storyVR.currentStep = 0
@@ -53,6 +67,75 @@ async function draw() {
     }
 }
 
+function playAudioDependingOnLocation(currentLocation) {
+
+    // Turns off all sounds
+    stopAllAudio()
+
+    sounds.teleport.setVolume(0.1)
+    sounds.teleport.play()
+
+    if (currentLocation === 'start') {
+        allDiningSounds(0.01)
+    }
+
+    if (currentLocation === 'case') {
+        allDiningSounds(0.004)
+        sounds.fireplace.setVolume(0.07)
+        sounds.fireplace.play()
+        sounds.fireplace.setLoop(true)
+    }
+
+    if (currentLocation === 'center') {
+        allStreetSounds(0.002)
+        allDiningSounds(0.002)
+        sounds.fireplace.setVolume(0.1)
+        sounds.fireplace.play()
+        sounds.fireplace.setLoop(true)
+    }
+
+    if (currentLocation === "shelf") {
+        sounds.fireplace.setVolume(0.07)
+        sounds.fireplace.play()
+        sounds.fireplace.setLoop(true)
+
+        allStreetSounds(0.006)
+    }
+    if (currentLocation === "window") {
+        allStreetSounds(0.006)
+    }
+
+    function allDiningSounds(volume) {
+        sounds.chatter.setVolume(volume)
+        sounds.chatter.play()
+        sounds.chatter.setLoop(true)
+        sounds.chatter.addCue(random(8, 16), () => {
+            sounds.laugh.setVolume(volume)
+            sounds.laugh.play()
+        })
+    }
+    function allStreetSounds(volume) {
+        sounds.street.setVolume(volume)
+        sounds.street.play()
+        sounds.street.setLoop(true)
+        sounds.street.addCue(random(6, 10), () => {
+            sounds.horseNeigh.setVolume(volume)
+            sounds.horseNeigh.play()
+        })
+        sounds.street.addCue(random(8, 10), () => {
+            sounds.horseWalk.setVolume(volume / 2)
+            sounds.horseWalk.play()
+        })
+    }
+}
+function stopAllAudio() {
+    for (const [key, _] of Object.entries(sounds)) {
+        if (sounds[key]._playing) {
+            sounds[key].stop()
+            sounds[key].clearCues()
+        }
+    }
+}
 
 // VR HANDLING
 
@@ -76,6 +159,7 @@ function moveNextStep() {
             storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].type !== "discovery") {
             let currentAction = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]
             currentAction.hide()
+            playAudioDependingOnLocation(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
         }
         storyVR.currentStep += 1
         storyVR.currentSubStep = 0
@@ -115,6 +199,10 @@ class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
             x, y, z, onClick: function (e) {
+                console.log(sounds)
+                // sounds.teleport.setVolume(0.1)
+
+                // sounds.teleport.play(0, 1, 0.1);
                 myFamilyRoom.changeValue(toLocationName)
             }
         })

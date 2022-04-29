@@ -29,11 +29,15 @@
 
     <script>
 
+        window.inStateVR = false
+
         
         function ar_experience_complete() {
             document.getElementById('iframe_ar').remove();
             document.getElementById('iframe_vr').style.display = 'block';
+            inStateVR = true
         }
+
     </script>
 </body>
 

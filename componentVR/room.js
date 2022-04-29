@@ -62,12 +62,13 @@ class FamilyRoom {
         this.selectedPoint = foundNewRoomInfo.id
         this.sky.setAsset(foundNewRoomInfo.asset)
         this.updateTeleportPads()
+
+        playAudioDependingOnLocation(foundNewRoomInfo.name)
     }
     // Updates the pads being shown/hidden depending on current selection
     updateTeleportPads() {
 
         // Updates the object to find (its clickable region)
-        console.log(storyVR)
         if (!!storyVR) {
             if (storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]?.type === "discovery") {
                 updateObjectMarker(this.roomPoints[this.selectedPoint].name)

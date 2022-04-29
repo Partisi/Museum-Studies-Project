@@ -62,6 +62,8 @@ class ObjectPanel {
     display() {
         const overlayElement = document.getElementById('overlay-container')
 
+        stopAllAudio()
+
         let centerPaneHTML = ''
         this.objects.forEach((eachObject, index) => {
             const objectInfo = Object.assign({}, ...Object.getOwnPropertyNames(eachObject).map(o => { return { [o]: eachObject[o] } }))
@@ -139,7 +141,7 @@ const stepsAR = [
         actions: [
             new Dialogue({ who: "Clock", env: 'AR', msg: "Hello! My name is Clementine. I am a dark brown wooden clock shaped like a pentagon and my size is slightly bigger than a cereal box. I am simple and sturdy, and decorated with an inlaid butterfly" }),
             new Dialogue({ who: "Clock", env: 'AR', msg: "I have lived here since the Tredwells first moved into the house in 1835. After the youngest daughter Gertrude passed away in 1933, I watched as this house turned into a museum, preserving its historical past." }),
-            new Dialogue({ who: "Clock", env: 'AR', msg: "I'm bored watching people go by; let’s play a game to pass the time! I want to introduce my friends to you, but they’re shy. If you can solve some of my riddles, they’re happy to meet you!" })
+            new Dialogue({ who: "Clock", env: 'AR', msg: "I'm bored watching people go by; let’s play a game to pass the time!" })
 
         ]
     },
