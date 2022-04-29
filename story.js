@@ -69,6 +69,7 @@ class ObjectPanel {
             const objectInfo = Object.assign({}, ...Object.getOwnPropertyNames(eachObject).map(o => { return { [o]: eachObject[o] } }))
             centerPaneHTML += `
                 <li key=${index} class="each-pane" >
+                    <img class="magnify-icon" src="../assets/searchicon.png" />
                     <div class="panel-frame">
                         <div class="outer-box">
                             <div class="inner-box">
@@ -85,7 +86,7 @@ class ObjectPanel {
             <ul>
                 ${centerPaneHTML}
             </ul>
-            <button id="continue-bttn" onclick="handleContinueBttn()">Continue</button>
+            <button id="continue-bttn" onclick="handleContinueBttn()"><p>Continue</p><img src="../assets/nexticon.png" /></button>
         </section>
         `
         overlayElement.style.display = "block"
@@ -105,10 +106,6 @@ function viewSingleInfo(infoToDisplay) {
         <section id="object-info-container">
             <button class="button-go-back" onclick={goBack()}>
                 <p>Go Back</p>
-                <div class="button-border button-border-left"></div>
-                <div class="button-border button-border-top"></div>
-                <div class="button-border button-border-right"></div>
-                <div class="button-border button-border-bottom"></div>
             </button>
             <div class="top-info">
                 <img src=${objParsed.image} alt=${objParsed.imageAlt} />

@@ -1,3 +1,5 @@
+@import "../index.less";
+
 // VR Scene
 #VRScene {
     z-index: 1;
@@ -153,10 +155,29 @@
         list-style: none;
         height: 100%;
         width: 100%;
-
         z-index: 1000;
 
         .each-pane {
+            position: relative;
+            transition: transform 1s;
+
+            &:hover {
+                transform: scale(1.05);
+                cursor: pointer;
+            }
+
+            // <a href="https://www.flaticon.com/free-icons/search" title="search icons">Search icons created by Kiranshastry - Flaticon</a>
+            .magnify-icon {
+                position: absolute;
+                top: 28px;
+                right: 28px;
+                width: 28px;
+                height: 28px;
+                background: white;
+                border: 1px solid blue;
+                border-radius: 50%;
+                padding: 12px;
+            }
 
             .panel-frame {
                 // Design from https://codepen.io/john_skowronski/pen/Egqqjy
@@ -164,13 +185,6 @@
                 border-width: 5px;
                 border-style: solid;
                 border-color: rgb(109, 84, 58) rgb(24, 19, 13) rgb(24, 19, 13) rgb(109, 84, 58);
-
-                transition: transform 1s;
-
-                &:hover {
-                    transform: scale(1.05);
-                    cursor: pointer;
-                }
 
                 .outer-box {
                     border: 12px solid rgb(65, 40, 16);
@@ -196,20 +210,43 @@
                     }
                 }
             }
-
-
-
-
-
-
         }
     }
 
+    // <a href="https://www.flaticon.com/free-icons/arrow" title="arrow icons">Arrow icons created by Handicon - Flaticon</a>
     #continue-bttn {
         position: relative;
         z-index: 12;
-        background-color: red;
-        width: 100%;
+
+        background-color: @secondary3;
+        border: 2px solid @secondary2;
+
+        border-radius: 8px;
+        transition: transform 1s;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        align-self: flex-end;
+
+        width: 240px;
+        height: 64px;
+
+        p {
+            color: black;
+            font-size: 16px;
+        }
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
     }
 
 
@@ -298,17 +335,14 @@
         display: inline-block;
         text-decoration: none;
         position: relative;
-        padding: 18px 56px;
-        border: 2px solid #582707;
-        background-color: #FFD9DA;
-
-        &:hover {
-            cursor: pointer;
-        }
+        padding: 8px 16px;
+        margin-top: 6px;
+        margin-left: 6px;
+        border: 1px solid @secondary2;
+        border-radius: 8px;
 
         p {
-            font-weight: bold;
-            color: #582707;
+            color: @secondary2;
             margin: 0;
             padding: 0;
             font-size: 16px;
@@ -319,56 +353,11 @@
             transition: all 0.15s ease-out;
         }
 
-        .button-border {
-            position: absolute;
-            background-color: #FF4B3E;
-            -webkit-transition: all 0.25s ease-out;
-            -moz-transition: all 0.25s ease-out;
-            -o-transition: all 0.25s ease-out;
-            transition: all 0.25s ease-out;
-        }
-
-        .button-border-left {
-            left: -2px;
-            bottom: -2px;
-            width: 2px;
-            height: 0;
-        }
-
-        .button-border-top {
-            left: -2px;
-            top: -2px;
-            width: 0;
-            height: 2px;
-        }
-
-        .button-border-right {
-            right: -2px;
-            top: -2px;
-            width: 2px;
-            height: 0;
-        }
-
-        .button-border-bottom {
-            right: -2px;
-            bottom: -2px;
-            width: 0;
-            height: 2px;
-        }
-
         &:hover {
+            cursor: pointer;
+            border: 1px solid @primary1;
             p {
-                color: #FF4B3E;
-            }
-
-            .button-border-left,
-            .button-border-right {
-                height: calc(100% + 2px);
-            }
-
-            .button-border-top,
-            .button-border-bottom {
-                width: calc(100% + 2px);
+                color: @primary1;
             }
         }
     }
