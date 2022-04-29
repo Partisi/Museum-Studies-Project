@@ -4,7 +4,8 @@ let capture
 let storyAR
 
 const sounds = {
-    muted: false
+    muted: false,
+    dialogue: []
 }
 
 // Setup
@@ -13,6 +14,10 @@ function setup() {
 
     sounds.magic = loadSound('../audio/misc/harp.wav')
     sounds.teleport = loadSound('../audio/misc/teleport.wav')
+
+    sounds.dialogue[0] = loadSound('../audio/dialogue_prompts_voice/1Hello!MyName.m4a')
+    sounds.dialogue[1] = loadSound('../audio/dialogue_prompts_voice/2Ihavelived.m4a')
+    sounds.dialogue[2] = loadSound('../audio/dialogue_prompts_voice/3imbored.m4a')
 
     storyAR = new Story(stepsAR)
     myCanvas = createCanvas(windowWidth, windowHeight);
@@ -51,6 +56,7 @@ function draw() {
         loaded = true
         if (storyAR.currentStep === 0) { sounds.muted = parse(localStorage.getItem('muted')) }
         if (storyAR.steps[storyAR.currentStep].actions.length > 0) {
+            sounds.dialogue[storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].audioIndex].play()
             storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].display()
         }
     }
@@ -101,6 +107,7 @@ function windowResized() {
 
 // On Dialogue Next
 function continueDialogue() {
+
     if (storyAR.steps[storyAR.currentStep].actions.length > storyAR.currentSubStep + 1) {
         let currentAction = storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep]
         currentAction.hide()
@@ -115,6 +122,7 @@ function continueDialogue() {
     }
     loaded = false
 }
+
 
 // Main AR Function
 async function createClockExperience() {

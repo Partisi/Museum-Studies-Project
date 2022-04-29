@@ -5,11 +5,13 @@ let myFamilyRoom
 let storyVR
 const sounds = {
     muted: false,
+    dialogue: [],
 }
 
 
 // Setup
 function setup() {
+
     sounds.fireplace = loadSound('../audio/misc/fireplace.wav')
     sounds.teleport = loadSound('../audio/misc/teleport.wav')
     sounds.teleport.setVolume(0.1)
@@ -20,6 +22,15 @@ function setup() {
     sounds.horseWalk = loadSound('../audio/misc/horseoutside.wav')
 
     sounds.found = loadSound('../audio/misc/found.wav')
+
+    sounds.dialogue[0] = loadSound('../audio/dialogue_prompts_voice/4myfriendmaylookwobbly.m4a')
+    sounds.dialogue[1] = loadSound('../audio/dialogue_prompts_voice/5greatjob.m4a')
+    sounds.dialogue[2] = loadSound('../audio/dialogue_prompts_voice/6clickthemag.m4a')
+    sounds.dialogue[3] = loadSound('../audio/dialogue_prompts_voice/7letsgofind.m4a')
+    sounds.dialogue[4] = loadSound('../audio/dialogue_prompts_voice/8myotherfriend.m4a')
+    sounds.dialogue[5] = loadSound('../audio/dialogue_prompts_voice/9greatjob.m4a')
+    sounds.dialogue[6] = loadSound('../audio/dialogue_prompts_voice/10clickthemag.m4a')
+    sounds.dialogue[7] = loadSound('../audio/dialogue_prompts_voice/11thanksforplaying.m4a')
 
     // <-----------------------> //
     // VR Space 
@@ -64,6 +75,7 @@ async function draw() {
                 if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
                 } else if (currentPointType === "dialogue" || currentPointType === "info") {
+                    if (currentPointType === "dialogue") sounds.dialogue[storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].audioIndex].play()
                     storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
                 }
             }
