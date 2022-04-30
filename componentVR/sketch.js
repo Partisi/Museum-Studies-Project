@@ -162,10 +162,12 @@ function stopAllAudio() {
                 sounds[key][key2].stop()
             }
         } else {
-            if (!!sounds[key]) {
-                sounds[key].stop()
-                sounds[key].clearCues()
-            }
+            try {
+                if (!!sounds[key]) {
+                    sounds[key].stop()
+                    sounds[key].clearCues()
+                }
+            } catch (error) { console.log(error) }
 
         }
 
