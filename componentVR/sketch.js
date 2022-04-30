@@ -162,10 +162,8 @@ function stopAllAudio() {
                 sounds[key][key2].stop()
             }
         }
-        if (sounds[key]._playing) {
-            sounds[key].stop()
-            sounds[key].clearCues()
-        }
+        sounds[key].stop()
+        sounds[key].clearCues()
     }
 }
 
