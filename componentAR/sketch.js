@@ -56,7 +56,7 @@ function draw() {
         loaded = true
         if (storyAR.currentStep === 0) { sounds.muted = parse(localStorage.getItem('muted')) }
         if (storyAR.steps[storyAR.currentStep].actions.length > 0) {
-            sounds.dialogue[storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].audioIndex].play()
+            if (!sounds.muted) sounds.dialogue[storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].audioIndex].play()
             storyAR.steps[storyAR.currentStep].actions[storyAR.currentSubStep].display()
         }
     }

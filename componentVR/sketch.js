@@ -6,6 +6,7 @@ let storyVR
 const sounds = {
     muted: false,
     dialogue: [],
+    info: []
 }
 
 
@@ -31,6 +32,12 @@ function setup() {
     sounds.dialogue[5] = loadSound('../audio/dialogue_prompts_voice/9greatjob.m4a')
     sounds.dialogue[6] = loadSound('../audio/dialogue_prompts_voice/10clickthemag.m4a')
     sounds.dialogue[7] = loadSound('../audio/dialogue_prompts_voice/11thanksforplaying.m4a')
+
+    sounds.info[0] = loadSound('../audio/info_voice/whatnot1.m4a')
+    sounds.info[1] = loadSound('../audio/info_voice/whatnot2.m4a')
+    sounds.info[2] = loadSound('../audio/info_voice/sofa1.m4a')
+    sounds.info[3] = loadSound('../audio/info_voice/sofa2.m4a')
+    sounds.info[4] = loadSound('../audio/info_voice/sofa2.m4a')
 
     // <-----------------------> //
     // VR Space 
@@ -59,7 +66,6 @@ async function draw() {
         // if first time running
         if (storyVR.currentStep === 0 && storyVR.currentSubStep === 0) {
             sounds.muted = parse(localStorage.getItem('muted'))
-            console.log(sounds.muted)
         }
 
         // if reached ending
@@ -75,7 +81,7 @@ async function draw() {
                 if (currentPointType === "discovery") {
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
                 } else if (currentPointType === "dialogue" || currentPointType === "info") {
-                    if (currentPointType === "dialogue") sounds.dialogue[storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].audioIndex].play()
+                    if (currentPointType === "dialogue" && !sounds.muted) sounds.dialogue[storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].audioIndex].play()
                     storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
                 }
             }
@@ -151,6 +157,11 @@ function playAudioDependingOnLocation(currentLocation) {
 }
 function stopAllAudio() {
     for (const [key, _] of Object.entries(sounds)) {
+        if (Array.isArray(sounds[key])) {
+            for (const [key2, _] of Object.entries(sounds[key])) {
+                sounds[key][key2].stop()
+            }
+        }
         if (sounds[key]._playing) {
             sounds[key].stop()
             sounds[key].clearCues()
