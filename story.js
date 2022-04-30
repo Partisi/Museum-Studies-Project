@@ -100,7 +100,7 @@ function viewSingleInfo(infoToDisplay) {
             <button class="button-go-back" onclick={goBack()}>
                 <p>Go Back</p>
             </button>
-            <button id="mute-bttn" onclick="toggleMute()"><img src="${getAudioIcon()}" /></button>
+            <button id="mute-bttn" onclick="toggleMute()"><image src="${getAudioIcon()}" /></button>
             <div class="top-info">
                 <img src=${objParsed.image} alt=${objParsed.imageAlt} />
                 <p>${objParsed.imageCaption}</p>
@@ -115,7 +115,7 @@ function viewSingleInfo(infoToDisplay) {
 function toggleMute() {
     localStorage.setItem('muted', !sounds.muted)
     sounds.muted = !sounds.muted
-    const soundElem = document.getElementById('mute-bttn').getElementsByTagName('img')[0]
+    const soundElem = document.getElementById('mute-bttn').getElementsByTagName('image')[0]
     soundElem.src = getAudioIcon()
     
     if (sounds.muted) {
