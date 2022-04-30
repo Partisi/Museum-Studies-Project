@@ -162,8 +162,11 @@ function stopAllAudio() {
                 sounds[key][key2].stop()
             }
         } else {
-            sounds[key].stop()
-            sounds[key].clearCues()
+            if (!!sounds[key]) {
+                sounds[key].stop()
+                sounds[key].clearCues()
+            }
+
         }
 
     }
