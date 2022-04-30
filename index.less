@@ -47,6 +47,7 @@ p {
 
     padding-right: 48px;
     padding-left: 48px;
+    padding-bottom: 24px;
 
     #msg-container {
         display: flex;
@@ -154,14 +155,16 @@ p {
         object-fit: cover;
     }
 
+    display: flex;
+    justify-content: center;
+
     #inner-landing-page {
         background-color: @primary2;
         border-radius: 8px;
         max-width: 600px;
         min-width: 320px;
-        width: 100%;
-        margin: auto;
-        margin-top: 48px;
+        width: calc(100% - 48px);
+        margin: 48px 24px;
 
         position: relative;
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -170,6 +173,7 @@ p {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        align-self: center;
 
         #main-title {
             font-size: 48px;
@@ -299,6 +303,31 @@ p {
                     font-size: 24px;
                     min-width: 196px;
                 }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #dialogue-container {
+        #msg-container {
+            p {
+                font-size: 32px;
+                max-width: calc(100% - 112px)
+            }
+
+            button {
+                img {
+                    width: 84px;
+                    height: 84px;
+                }
+            }
+        }
+
+        #who-container {
+            img {
+                width: 400px;
+                height: 400px;
             }
         }
     }
