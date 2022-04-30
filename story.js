@@ -268,8 +268,7 @@ const stepsVR = [
     { // returns back to room
         id: 8,
         actions: [
-            new Dialogue({ who: "Clock", env: 'VR', audioIndex: 7, msg: "Great job, you found everything!" }),
-            new Dialogue({ who: "Clock", env: 'VR', msg: "Goodbye!" }),
+            new Dialogue({ who: "Clock", env: 'VR', audioIndex: 7, msg: "Thanks for playing and I hope I'll see you next time! Goodbye!" }),
             null
         ]
     },

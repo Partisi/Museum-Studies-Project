@@ -37,7 +37,7 @@ function setup() {
     sounds.info[1] = loadSound('../audio/info_voice/whatnot2.m4a')
     sounds.info[2] = loadSound('../audio/info_voice/sofa1.m4a')
     sounds.info[3] = loadSound('../audio/info_voice/sofa2.m4a')
-    sounds.info[4] = loadSound('../audio/info_voice/sofa2.m4a')
+    sounds.info[4] = loadSound('../audio/info_voice/sofa3.m4a')
 
     // <-----------------------> //
     // VR Space 
@@ -69,11 +69,11 @@ async function draw() {
         }
 
         // if reached ending
-        if (storyVR.currentStep === 8 && storyVR.currentSubStep === 2) {
+        if (storyVR.currentStep === 8 && storyVR.currentSubStep === 1) {
             storyVR.currentStep = 0
             storyVR.currentSubStep = 0
             console.log("we have ending...")
-            window.location.href = '/index.html'
+            window.location.href = window.location.origin
         } else {
             // if some action
             if (storyVR.steps[storyVR.currentStep].actions.length > 0) {
