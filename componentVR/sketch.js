@@ -161,9 +161,11 @@ function stopAllAudio() {
             for (const [key2, _] of Object.entries(sounds[key])) {
                 sounds[key][key2].stop()
             }
+        } else {
+            sounds[key].stop()
+            sounds[key].clearCues()
         }
-        sounds[key].stop()
-        sounds[key].clearCues()
+
     }
 }
 
