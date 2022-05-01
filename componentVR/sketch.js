@@ -163,7 +163,7 @@ function stopAllAudio() {
             }
         } else {
             try {
-                if (!!sounds[key]) {
+                if (!!sounds[key] && key !== 'muted') {
                     sounds[key].stop()
                     sounds[key].clearCues()
                 }
