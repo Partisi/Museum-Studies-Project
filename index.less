@@ -146,13 +146,19 @@ p {
 #landing-page {
 
     background-color: lightcoral;
+
     #background-image {
-        position: absolute;
+        min-height: 100%;
+        min-width: 1024px;
+
+        /* Set up proportionate scaling */
+        width: 100%;
+        height: auto;
+
+        /* Set up positioning */
+        position: fixed;
         top: 0;
         left: 0;
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
     }
 
     display: flex;
