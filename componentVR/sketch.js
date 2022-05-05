@@ -73,7 +73,9 @@ async function draw() {
             storyVR.currentStep = 0
             storyVR.currentSubStep = 0
             console.log("we have ending...")
-            window.location.href = "/"
+            console.log(window.location)
+            console.log("/index.html")
+            window.location.href = "/index.html"
         } else {
             // if some action
             if (storyVR.steps[storyVR.currentStep].actions.length > 0) {
