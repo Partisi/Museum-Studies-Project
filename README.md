@@ -12,8 +12,8 @@ Enjoy!
 ## Contributors
 
 ### Advisors
-- [Craig Kapp](https://cs.nyu.edu/~kapp/index.php) a NYU Professor of Computer Science at the Courant Institute of Mathematical Sciences serving as a tech advisor.
-- [Dr. Rosanna N Flouty](https://as.nyu.edu/faculty/rosanna-n-flouty.html) a NYU Professor of Museum Studies Program who helped develop the concept and set the stage.
+- [Craig Kapp](https://cs.nyu.edu/~kapp/index.php): NYU Professor of Computer Science at the Courant Institute of Mathematical Sciences serving as a tech advisor.
+- [Dr. Rosanna N Flouty](https://as.nyu.edu/faculty/rosanna-n-flouty.html): NYU Professor of Museum Studies Program who helped develop the concept and set the stage.
 
 ### Visonaries/Product Leads
 - Priya Blair
