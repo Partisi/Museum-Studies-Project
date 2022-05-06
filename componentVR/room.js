@@ -1,7 +1,7 @@
 class FamilyRoom {
     constructor() {
         this.selectedPoint = 0 // where the user starts out
-        this.roomPoints = [
+        this.roomPoints = [ // render other teleport pads depoending on user location
             {
                 id: 0,
                 name: "start",
@@ -57,12 +57,13 @@ class FamilyRoom {
         this.allTeleportPaths = []
         this.updateTeleportPads()
     }
-    changeValue(toName) {
+    changeValue(toName) { // changes the user location
         let foundNewRoomInfo = this.roomPoints.find(o => o.name === toName)
         this.selectedPoint = foundNewRoomInfo.id
         this.sky.setAsset(foundNewRoomInfo.asset)
         this.updateTeleportPads()
 
+        // cue audio
         playAudioDependingOnLocation(foundNewRoomInfo.name)
     }
     // Updates the pads being shown/hidden depending on current selection
@@ -75,14 +76,14 @@ class FamilyRoom {
             }
         }
 
-        // Clear current
+        // Clear current teleport paths
         this.allTeleportPaths.forEach(eachOldPoint => {
             world.remove(eachOldPoint.obj.clickEventObj)
             world.remove(eachOldPoint.obj.indicator)
         })
         this.allTeleportPaths = []
 
-        // Set new
+        // Adds new teleport paths
         const currentRoom = this.roomPoints[this.selectedPoint]
         currentRoom.teleportPaths.forEach(eachTeleportLocation => {
             this.allTeleportPaths.push({

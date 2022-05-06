@@ -1,11 +1,13 @@
 
+// Language Handling
 const languageSelections = [
     'english',
     'spanish'
 ]
-let language = languageSelections[0]
-localStorage.setItem('language', language)
+let language = languageSelections[0] // default language
+localStorage.setItem('language', language) // sets in local storage
 
+// Depending on language change, shows correct icon and saves in local storage
 function changeLanguage(selection) {
     language = selection
 
@@ -23,14 +25,17 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// If local storage has muted
 let muted = localStorage.getItem('muted') === undefined ? false : parse(localStorage.getItem('muted'))
 
+// Handling muted icons and sets in storage
 function changeMuted() {
     muted = !muted
     localStorage.setItem('muted', muted)
     document.getElementById('mute-settings').getElementsByTagName('img')[0].src = audioIcon(true)
 }
 
+// Retursn the appropiate auido icon
 function audioIcon(callingFromParent = false) {
     if (muted) {
         if (callingFromParent) {
@@ -47,6 +52,7 @@ function audioIcon(callingFromParent = false) {
     }
 }
 
+// Parse from local storage
 function parse(type) {
     return typeof type == 'string' ? JSON.parse(type) : type;
 }

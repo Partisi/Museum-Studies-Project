@@ -37,15 +37,7 @@ function setup() {
 let screenshottedEnv = null // screenshot of AR space of camera
 let startClockExperience = false // begins the animation of the clock to VR
 
-// // For taking the screenshot
-// function touchStarted() {
-//     if (loaded === false && storyAR.currentStep === 1) {
-//         saveCurrent()
-//     }
-// }
-
 let loaded = false // used to load once
-
 
 // Main Drawing
 function draw() {
@@ -61,12 +53,14 @@ function draw() {
         }
     }
 
+    // If reached end of AR dialogue, create a screenshot
     if (!startClockExperience && storyAR.currentStep === 1) {
         screenshottedEnv = createImage(capture.width, capture.height);
         screenshottedEnv.copy(capture, 0, 0, capture.width, capture.height, 0, 0, screenshottedEnv.width, screenshottedEnv.height);
         startClockExperience = true
     }
 
+    // begin animation
     if (startClockExperience) {
         if (loaded === false) {
             loaded = true
@@ -75,7 +69,7 @@ function draw() {
     }
 
 
-    // Displays
+    // Display video / screenshot
     if (!!screenshottedEnv) {
         //image(screenshottedEnv, 0, 0, 0, windowHeight);
         image(screenshottedEnv, 0, 0, width, height);
@@ -83,6 +77,7 @@ function draw() {
         image(capture, 0, 0, width, height);
     }
 
+    // Animation particles
     for (var i = 0; i < particles.length; i++) {
         if (particles[i].alive) {
             particles[i].display()
@@ -91,6 +86,8 @@ function draw() {
             i--
         }
     }
+
+    // Animation of fireball orbs (they looked cool)
     for (var i = 0; i < orbs.length; i++) {
         if (orbs[i].alive) {
             orbs[i].display()
@@ -101,6 +98,7 @@ function draw() {
     }
 }
 
+// Resize canvas depending on window
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
@@ -216,7 +214,7 @@ class Particle {
         }
     }
 }
-const tailLength = 100
+const tailLength = 100 // trail of fireball
 let trail = []
 const orbs = []
 class MagicalOrb {
@@ -244,6 +242,7 @@ class MagicalOrb {
         this.angle += this.speed;
         this.scalar += this.speed * 4;
 
+        // Decrease opacity and tail goes on
         if (this.opacity <= 60) {
             this.opacity -= 0.2
         } else {

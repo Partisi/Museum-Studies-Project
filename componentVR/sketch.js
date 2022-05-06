@@ -13,6 +13,7 @@ const sounds = {
 // Setup
 function setup() {
 
+    // All Sounds
     sounds.fireplace = loadSound('../audio/misc/fireplace.wav')
     sounds.teleport = loadSound('../audio/misc/teleport.wav')
     sounds.teleport.setVolume(0.1)
@@ -56,11 +57,12 @@ let loaded = false // used to load once
 // Main Drawing
 async function draw() {
 
+    // Draws the teleport markers with animation
     for (let i = 0; i < myFamilyRoom.allTeleportPaths.length; i++) {
         myFamilyRoom.allTeleportPaths[i].obj.animateMarker()
     }
 
-    // Will RUN ONCE
+    // Will RUN ONCE for each story
     if (loaded === false && window.parent.inStateVR) {
 
         // if first time running
@@ -68,21 +70,18 @@ async function draw() {
             sounds.muted = parse(localStorage.getItem('muted'))
         }
 
-        // if reached ending
+        // if reached ending of tory
         if (storyVR.currentStep === 8 && storyVR.currentSubStep === 1) {
             storyVR.currentStep = 0
             storyVR.currentSubStep = 0
-            console.log("we have ending...")
-            console.log(window.location)
-            console.log("/index.html")
             window.location.href = "/index.html"
         } else {
-            // if some action
+            // if some action to do
             if (storyVR.steps[storyVR.currentStep].actions.length > 0) {
                 let currentPointType = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]?.type
-                if (currentPointType === "discovery") {
+                if (currentPointType === "discovery") { // discovery being 'found item'
                     updateObjectMarker(myFamilyRoom.roomPoints[myFamilyRoom.selectedPoint].name)
-                } else if (currentPointType === "dialogue" || currentPointType === "info") {
+                } else if (currentPointType === "dialogue" || currentPointType === "info") { // clock speaking or info displayed
                     if (currentPointType === "dialogue" && !sounds.muted) sounds.dialogue[storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].audioIndex].play()
                     storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
                 }
@@ -92,12 +91,13 @@ async function draw() {
     }
 }
 
+// Changes the audio and its sounds depending on user's location in room
 function playAudioDependingOnLocation(currentLocation) {
 
     // Turns off all sounds
     stopAllAudio()
 
-    if (sounds.muted) {
+    if (sounds.muted) { // cutoff is muted
         return
     }
 
@@ -134,7 +134,7 @@ function playAudioDependingOnLocation(currentLocation) {
         allStreetSounds(0.006)
     }
 
-    function allDiningSounds(volume) {
+    function allDiningSounds(volume) { // collection of dining sounds (throw in some laughing too)
         sounds.chatter.setVolume(volume)
         sounds.chatter.play()
         sounds.chatter.setLoop(true)
@@ -143,7 +143,7 @@ function playAudioDependingOnLocation(currentLocation) {
             sounds.laugh.play()
         })
     }
-    function allStreetSounds(volume) {
+    function allStreetSounds(volume) { // collection of street sounds (threw in a horse)
         sounds.street.setVolume(volume)
         sounds.street.play()
         sounds.street.setLoop(true)
@@ -157,6 +157,8 @@ function playAudioDependingOnLocation(currentLocation) {
         })
     }
 }
+
+// Cuts all audio if muted
 function stopAllAudio() {
     for (const [key, _] of Object.entries(sounds)) {
         if (Array.isArray(sounds[key])) {
@@ -176,8 +178,6 @@ function stopAllAudio() {
     }
 }
 
-// VR HANDLING
-
 // On Dialogue Next
 function continueDialogue() {
     moveNextStep()
@@ -188,6 +188,8 @@ function handleContinueBttn() {
 }
 
 // Moving on
+// if reached end of actions in currentStep, then move onto next step.
+// basically, go through each major step and then go threw each minor step and cycle through
 function moveNextStep() {
     if (storyVR.steps[storyVR.currentStep].actions.length > storyVR.currentSubStep + 1) {
         let currentAction = storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep]
@@ -207,6 +209,7 @@ function moveNextStep() {
 }
 
 // General Marker for clicking events
+// Needs closer marker because of distance issues with clikcing
 class Marker {
     constructor({ x, y, z, onClick, width = 6, height = 30 }) {
 
@@ -233,7 +236,7 @@ class Marker {
     }
 }
 
-// The teleport indacotr
+// The teleport indacator on floor
 class TeleportMarker extends Marker {
     constructor({ x, y, z, toLocationName }) {
         super({
@@ -274,7 +277,7 @@ class TeleportMarker extends Marker {
         world.add(this.indicator)
     }
 
-    animateMarker() {
+    animateMarker() { // animation
 
         if (frameCount % 5 === 0) {
             const maxWidth = 25
@@ -305,6 +308,7 @@ class ObjectMarker extends Marker {
     }
 }
 
+// if an iSpy object was discovered
 function objectFound() {
     removeObjectMaker()
     moveNextStep()
@@ -333,6 +337,7 @@ function updateObjectMarker(newLocation) {
     }
 }
 
+// iSpy objects and the location that they appear in each room point
 const discoveryObjects = [
     {
         item: "whatnot",

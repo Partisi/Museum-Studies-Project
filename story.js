@@ -12,7 +12,7 @@ class Dialogue {
     }
     display() {
         let overlayElement
-        if (this.env === 'AR') {
+        if (this.env === 'AR') { // points to appropiate elment depending on scene
             overlayElement = document.getElementById('intro-dialogue')
         } else {
             overlayElement = document.getElementById('overlay-container')
@@ -32,7 +32,7 @@ class Dialogue {
     }
     hide() {
         let overlayElement
-        sounds.dialogue[this.audioIndex].stop()
+        sounds.dialogue[this.audioIndex].stop() // stops dialogue audip if skipped
 
         if (this.env === 'AR') {
             overlayElement = document.getElementById('intro-dialogue')
@@ -43,6 +43,7 @@ class Dialogue {
     }
 }
 
+// Object panel for info display
 class ObjectPanel {
     constructor({ objects }) {
         this.objects = objects
@@ -52,7 +53,7 @@ class ObjectPanel {
     display() {
         const overlayElement = document.getElementById('overlay-container')
 
-        stopAllAudio()
+        stopAllAudio() // stops all background audio
 
         let centerPaneHTML = ''
         this.objects.forEach((eachObject, index) => {
@@ -87,6 +88,7 @@ class ObjectPanel {
     }
 }
 
+// In depth single view info
 function viewSingleInfo(infoToDisplay) {
     
     const objParsed = JSON.parse(decodeURIComponent(infoToDisplay))
@@ -112,6 +114,8 @@ function viewSingleInfo(infoToDisplay) {
         </section>
         `
 }
+
+// Toggle mute
 function toggleMute() {
     localStorage.setItem('muted', !sounds.muted)
     sounds.muted = !sounds.muted
@@ -131,6 +135,7 @@ function getAudioIcon() {
     }
 }
 
+// Go back from single object view back to panel
 function goBack() {
     stopAllAudio()
     storyVR.steps[storyVR.currentStep].actions[storyVR.currentSubStep].display()
@@ -150,7 +155,15 @@ class ObjectInfo {
     }
 }
 
+/**
+ * Story Flow
+ * Every index in the array is a specific point in story.
+ * Each index is rendered ONCE onto screen.
+ * 
+ * For next progression, goes through actions and if reach end of actions in index, then move to next index
+ */
 
+// Steps for AR
 const stepsAR = [
     { // Clicked enter and clock gives introduction
         id: 0,
@@ -166,6 +179,7 @@ const stepsAR = [
     },
 ]
 
+// Steps for VR
 const stepsVR = [
     { // Initial Entry into VR, clock speaks
         id: 0,
